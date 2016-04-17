@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react'
 import classNames from 'classnames'
 import { connect } from 'react-redux'
-import SingleValidationResult from 'components/SingleValidationResult/SingleValidationResult'
+import SingleValidationResult from 'components/SingleValidationResult'
 
 import { updateEmail, validate } from 'redux/modules/SingleValidation'
 

@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
-import BulkValidationResultRow from 'components/BulkValidationResultRow/BulkValidationResultRow'
+import BulkValidationResultRow from 'components/BulkValidationResultRow'
 import ResultStats from 'components/ResultStats'
 import { updateEmailsList, validate } from 'redux/modules/BulkValidation'
 
