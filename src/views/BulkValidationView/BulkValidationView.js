@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import BulkValidationResultRow from 'components/BulkValidationResultRow'
 import ResultStats from 'components/ResultStats'
 import { updateEmailsList, validate } from 'redux/modules/BulkValidation'
+import download from 'downloadjs'
 
 export class BulkValidation extends React.Component {
 
@@ -12,10 +13,23 @@ export class BulkValidation extends React.Component {
     super(props)
     this.handleEmailsListInputChange = this.handleEmailsListInputChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
+    this.handleValidEmailsDownload = this.handleValidEmailsDownload.bind(this)
+    this.handleAllResultsDownloads = this.handleAllResultsDownloads.bind(this)
   }
 
   handleEmailsListInputChange (e) {
     this.props.onEmailsListInputChange(e.target.value)
+  }
+
+  handleValidEmailsDownload () {
+    const emails = this.props.results.filter((r) => r.status === 'valid').map((r) => r.emailAddress).join('\n')
+    download(emails, 'validEmails.txt', 'text/plain')
+  }
+
+  handleAllResultsDownloads () {
+    let content = 'emailAddress,status\n'
+    this.props.results.map((r) => { content += `${r.emailAddress},${r.status}\n` })
+    download(content, 'emailValidationResult.csv', 'text/csv')
   }
 
   handleSubmit (e) {
@@ -32,10 +46,10 @@ export class BulkValidation extends React.Component {
     return (
       <div>
         <div style={{display: 'inline-block', margin: '1em auto'}}>
-          <button className='btn btn-default' style={{marginRight: '1em'}}>
+          <button className='btn btn-default' style={{marginRight: '1em'}} onClick={this.handleValidEmailsDownload}>
             <i className='fa fa-download'></i> Download valid addresses as .txt
           </button>
-          <button className='btn btn-default'>
+          <button className='btn btn-default' onClick={this.handleAllResultsDownloads}>
             <i className='fa fa-download'></i> Download all results as .csv
           </button>
         </div>
