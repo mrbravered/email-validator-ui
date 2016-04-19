@@ -22,7 +22,7 @@ export class SingleValidation extends React.Component {
   }
 
   render () {
-    const { status, emailAddress, isFetching } = this.props
+    const { status, emailAddress, isFetching, error } = this.props
 
     return (
       <div className='container'>
@@ -52,6 +52,7 @@ export class SingleValidation extends React.Component {
                 <button type='submit' className='btn btn-block btn-primary'>Validate</button>
               </div>
             </form>
+            <div>Error: {error}</div>
             <SingleValidationResult emailAddress={emailAddress} status={status} />
           </div>
         </div>
@@ -61,6 +62,7 @@ export class SingleValidation extends React.Component {
 }
 
 SingleValidation.propTypes = {
+  error: PropTypes.string,
   status: PropTypes.string,
   emailAddress: PropTypes.string,
   isFetching: PropTypes.bool,

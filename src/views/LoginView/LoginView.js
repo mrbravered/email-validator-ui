@@ -1,16 +1,44 @@
-import React from 'react'
+import React, { PropTypes } from 'react'
+import { connect } from 'react-redux'
+import { login } from 'redux/modules/Auth'
 
-type Props = {
+export class LoginView extends React.Component {
+  constructor (props) {
+    super(props)
+    this.handleSubmit = this.handleSubmit.bind(this)
+  }
 
-};
-export class Login extends React.Component {
-  props: Props;
+  handleSubmit (e) {
+    e.preventDefault()
+    this.props.onSubmit(this.refs.apiKey.value)
+  }
 
   render () {
     return (
-      <div>Login</div>
-    )
+      <div>
+        <form onSubmit={this.handleSubmit}>
+          <input type='text' ref='apiKey'/>
+          <button type='submit'>Login</button>
+        </form>
+      </div>
+      )
   }
 }
 
-export default Login
+LoginView.propTypes = {
+  onSubmit: PropTypes.func.isRequired
+}
+
+const mapStateToProps = (state) => {
+  return state.auth
+}
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onSubmit: (apiKey) => dispatch(login(apiKey))
+  }
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(LoginView)
