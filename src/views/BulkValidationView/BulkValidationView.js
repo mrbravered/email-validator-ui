@@ -4,6 +4,7 @@ import BulkValidationResultRow from 'components/BulkValidationResultRow'
 import ResultStats from 'components/ResultStats'
 import { updateEmailsList, validate } from 'redux/modules/BulkValidation'
 import download from 'downloadjs'
+import readList from 'utils/listReader'
 
 export class BulkValidation extends React.Component {
 
@@ -12,6 +13,7 @@ export class BulkValidation extends React.Component {
   constructor (props) {
     super(props)
     this.handleEmailsListInputChange = this.handleEmailsListInputChange.bind(this)
+    this.handleFileInputChange = this.handleFileInputChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
     this.handleValidEmailsDownload = this.handleValidEmailsDownload.bind(this)
     this.handleAllResultsDownloads = this.handleAllResultsDownloads.bind(this)
@@ -19,6 +21,10 @@ export class BulkValidation extends React.Component {
 
   handleEmailsListInputChange (e) {
     this.props.onEmailsListInputChange(e.target.value)
+  }
+
+  handleFileInputChange (e) {
+    readList(e.target.files[0]).then((textList) => this.props.onEmailsListInputChange(textList))
   }
 
   handleValidEmailsDownload () {
@@ -34,7 +40,7 @@ export class BulkValidation extends React.Component {
 
   handleSubmit (e) {
     e.preventDefault()
-    this.props.onSubmit(this.refs.emailsListInput.value)
+    this.props.onSubmit()
   }
 
   get resultsSection () {
@@ -79,6 +85,7 @@ export class BulkValidation extends React.Component {
           <div className='col-sm-12 col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3'>
             <h1>Bulk email validation</h1>
             <form onSubmit={this.handleSubmit}>
+              <input type='file' ref='fileInput' onChange={this.handleFileInputChange} />
               <div className='form-group'>
                 <textarea
                   disabled={isFetching}
@@ -90,7 +97,11 @@ export class BulkValidation extends React.Component {
                 ></textarea>
               </div>
               <div className='form-group'>
-                <button type='submit' className='btn btn-primary btn-block'>Validate</button>
+                <button
+                  disabled={emailsList.length === 0}
+                  type='submit'
+                  className='btn btn-primary btn-block'
+                >Validate</button>
               </div>
             </form>
             <div className='page-header'>

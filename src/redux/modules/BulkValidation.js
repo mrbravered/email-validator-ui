@@ -31,10 +31,10 @@ export function receivedValidation (results) {
 }
 
 // Thunk
-export function validate (emailsList) {
-  return function (dispatch) {
+export function validate () {
+  return function (dispatch, getState) {
     // Transform emailsList
-    const emailsArray = compact(unique(emailsList.trim().split('\n')))
+    const emailsArray = compact(unique(getState().bulkValidation.emailsList.trim().split('\n')))
     dispatch(requestValidation(emailsArray))
     return validateBulk(emailsArray).then((result) => {
       dispatch(receivedValidation(result.results))
