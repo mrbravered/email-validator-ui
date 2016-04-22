@@ -16,13 +16,14 @@ export function login (token) {
 export function logout () {
   return (dispatch) => {
     localStorage.removeItem('APIKey')
+    dispatch({type: LOGOUT})
+    dispatch(push('/login'))
   }
 }
 
 // Reducer
 export const initialState = {
-  isLoggedIn: Boolean(localStorage.getItem('APIKey')),
-  validAPIKey: null
+  isLoggedIn: Boolean(localStorage.getItem('APIKey'))
 }
 export default function (state = initialState, action) {
   switch (action.type) {
