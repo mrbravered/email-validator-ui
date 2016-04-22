@@ -4,7 +4,7 @@ export function validateEmail (email) {
       if (localStorage.getItem('APIKey') === 'asd') {
         resolve({
           'emailAddress': email,
-          'status': ['valid', 'invalid'][Math.floor(Math.random() * 2)],
+          'status': ['valid', 'invalid', 'unknown'][Math.floor(Math.random() * 3)],
           'date': new Date()
         })
       } else {

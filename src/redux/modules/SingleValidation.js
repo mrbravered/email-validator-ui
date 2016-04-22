@@ -44,10 +44,7 @@ export function validate (email) {
     return validateEmail(email).then((result) => {
       dispatch(receivedValidation(result.emailAddress, result.status))
     }).catch((e) => {
-      console.log('Asdasdf')
-      console.log(e)
       dispatch(failedValidation(e.message))
-      console.log(e)
     })
   }
 }

@@ -9,7 +9,8 @@ const SingleValidationResult = ({status, emailAddress}) => {
       <div className={classNames(
         'alert',
         {'alert-success': status === 'valid'},
-        {'alert-danger': status === 'invalid'}
+        {'alert-danger': status === 'invalid'},
+        {'alert-info': status === 'unknown'}
       )}>
         {status === 'valid' ? <i className='fa fa-check' aria-hidden='true'></i> : ''}
         {status === 'invalid' ? <i className='fa fa-remove' aria-hidden='true'></i> : ''}
