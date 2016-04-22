@@ -1,9 +1,9 @@
 import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
-import BulkValidationResultRow from 'components/BulkValidationResultRow'
-import ResultStats from 'components/ResultStats'
+import ResultsTable from 'components/BulkValidation/ResultsTable'
+import ResultStats from 'components/BulkValidation/ResultStats'
+import ResultsDownload from 'components/BulkValidation/ResultsDownload'
 import { updateEmailsList, validate } from 'redux/modules/BulkValidation'
-import download from 'downloadjs'
 import readList from 'utils/listReader'
 
 export class BulkValidation extends React.Component {
@@ -28,17 +28,6 @@ export class BulkValidation extends React.Component {
     readList(e.target.files[0]).then((textList) => this.props.onEmailsListInputChange(textList))
   }
 
-  handleValidEmailsDownload () {
-    const emails = this.props.results.filter((r) => r.status === 'valid').map((r) => r.emailAddress).join('\n')
-    download(emails, 'validEmails.txt', 'text/plain')
-  }
-
-  handleAllResultsDownloads () {
-    let content = 'emailAddress,status\n'
-    this.props.results.map((r) => { content += `${r.emailAddress},${r.status}\n` })
-    download(content, 'emailValidationResult.csv', 'text/csv')
-  }
-
   openUploadDialog () {
     this.refs.fileInput.click()
   }
@@ -57,28 +46,9 @@ export class BulkValidation extends React.Component {
 
     return (
       <div>
-        <div style={{display: 'inline-block', margin: '1em auto'}}>
-          <button className='btn btn-default' style={{marginRight: '1em'}} onClick={this.handleValidEmailsDownload}>
-            <i className='fa fa-download'></i> Download valid addresses as .txt
-          </button>
-          <button className='btn btn-default' onClick={this.handleAllResultsDownloads}>
-            <i className='fa fa-download'></i> Download all results as .csv
-          </button>
-        </div>
+        <ResultsDownload results={results} />
         <ResultStats validCount={validCount} invalidCount={invalidCount} unknownCount={unknownCount} />
-        <div>
-          <table className='table'>
-            <thead>
-              <tr>
-                <th>Email Address</th>
-                <th>Result</th>
-              </tr>
-            </thead>
-            <tbody>
-              {results.map((result) => <BulkValidationResultRow key={result.emailAddress} result={result}/>)}
-            </tbody>
-          </table>
-        </div>
+        <ResultsTable results={results} />
       </div>
     )
   }
