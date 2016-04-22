@@ -53,6 +53,7 @@ export class BulkValidation extends React.Component {
 
     const validCount = results.filter((r) => r.status === 'valid').length
     const invalidCount = results.filter((r) => r.status === 'invalid').length
+    const unknownCount = results.filter((r) => r.status === 'unknown').length
 
     return (
       <div>
@@ -64,7 +65,7 @@ export class BulkValidation extends React.Component {
             <i className='fa fa-download'></i> Download all results as .csv
           </button>
         </div>
-        <ResultStats validCount={validCount} invalidCount={invalidCount} />
+        <ResultStats validCount={validCount} invalidCount={invalidCount} unknownCount={unknownCount} />
         <div>
           <table className='table'>
             <thead>

@@ -23,7 +23,7 @@ export function validateBulk (emails) {
           'results': emails.map((email) => {
             return {
               'emailAddress': email,
-              'status': ['valid', 'invalid'][Math.floor(Math.random() * 2)]
+              'status': ['valid', 'invalid', 'unknown'][Math.floor(Math.random() * 3)]
             }
           })
         })
