@@ -8,7 +8,7 @@ export function validateEmail (email) {
           'date': new Date()
         })
       } else {
-        reject(new Error('Invalid APIKey.'))
+        reject(new Error('Invalid APIKey. Logout and login again with a valid API Key.'))
       }
     }, 1500)
   })
