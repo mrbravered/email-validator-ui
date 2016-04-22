@@ -17,6 +17,7 @@ export class BulkValidation extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this)
     this.handleValidEmailsDownload = this.handleValidEmailsDownload.bind(this)
     this.handleAllResultsDownloads = this.handleAllResultsDownloads.bind(this)
+    this.openUploadDialog = this.openUploadDialog.bind(this)
   }
 
   handleEmailsListInputChange (e) {
@@ -36,6 +37,10 @@ export class BulkValidation extends React.Component {
     let content = 'emailAddress,status\n'
     this.props.results.map((r) => { content += `${r.emailAddress},${r.status}\n` })
     download(content, 'emailValidationResult.csv', 'text/csv')
+  }
+
+  openUploadDialog () {
+    this.refs.fileInput.click()
   }
 
   handleSubmit (e) {
@@ -85,7 +90,12 @@ export class BulkValidation extends React.Component {
           <div className='col-sm-12 col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3'>
             <h1>Bulk email validation</h1>
             <form onSubmit={this.handleSubmit}>
-              <input type='file' ref='fileInput' onChange={this.handleFileInputChange} />
+              <div className='form-group'>
+                <button className='btn btn-default' onClick={this.openUploadDialog}>
+                  <i className='fa fa-upload'></i> Upload list of e-mail addresses
+                </button>
+                <input type='file' style={{display: 'none'}} ref='fileInput' onChange={this.handleFileInputChange} />
+              </div>
               <div className='form-group'>
                 <textarea
                   disabled={isFetching}
