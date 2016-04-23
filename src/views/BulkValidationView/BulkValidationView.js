@@ -15,8 +15,6 @@ export class BulkValidation extends React.Component {
     this.handleEmailsListInputChange = this.handleEmailsListInputChange.bind(this)
     this.handleFileInputChange = this.handleFileInputChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
-    this.handleValidEmailsDownload = this.handleValidEmailsDownload.bind(this)
-    this.handleAllResultsDownloads = this.handleAllResultsDownloads.bind(this)
     this.openUploadDialog = this.openUploadDialog.bind(this)
   }
 
@@ -49,12 +47,13 @@ export class BulkValidation extends React.Component {
         <ResultsDownload results={results} />
         <ResultStats validCount={validCount} invalidCount={invalidCount} unknownCount={unknownCount} />
         <ResultsTable results={results} />
+
       </div>
     )
   }
 
   render () {
-    const { emailsList, isFetching, results } = this.props
+    const { emailsList, isFetching, results, error } = this.props
     return (
       <div className='container'>
         <div className='row'>
@@ -85,6 +84,7 @@ export class BulkValidation extends React.Component {
                 >Validate</button>
               </div>
             </form>
+            {error ? <div className='alert alert-danger'>Error: {error}</div> : ''}
             <div className='page-header'>
               <h2>Results</h2>
             </div>
@@ -97,6 +97,7 @@ export class BulkValidation extends React.Component {
 }
 
 BulkValidation.propTypes = {
+  error: PropTypes.string,
   results: PropTypes.array,
   emailsList: PropTypes.string,
   isFetching: PropTypes.bool,

@@ -1,5 +1,5 @@
 import { validateEmail } from 'Api'
-
+import { LOGIN } from './Auth'
 // Constants
 const UPDATE_EMAIL = 'email-validator-ui/single-validation/UPDATE_EMAIL'
 
@@ -81,6 +81,11 @@ export default function (state = initialState, action) {
       return Object.assign({}, state, {
         isFetching: false,
         error: action.error
+      })
+
+    case LOGIN:
+      return Object.assign({}, state, {
+        error: null
       })
 
     default:
