@@ -26,22 +26,29 @@ export function validateEmail (email) {
 
 // Mock function since is not supported by the API yet
 export function validateBulk (emails) {
+  const token = localStorage.getItem('APIKey')
   return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      if (localStorage.getItem('APIKey') === 'asd') {
-        resolve({
-          'date': new Date(),
-          'results': emails.map((email) => {
-            return {
-              'emailAddress': email,
-              'status': ['valid', 'invalid', 'unknown'][Math.floor(Math.random() * 3)]
-            }
-          })
-        })
-      } else {
-        reject(new Error(INVALID_APIKEY_MESSAGE))
-      }
-    }, 50)
+    fetch(BASE_URL + 'list', {
+      mode: 'cors',
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        emailAddresses: emails
+      })
+    }).then((r) => {
+      r.json().then((data) => {
+        if (data.message) {
+          reject(new Error(INVALID_APIKEY_MESSAGE))
+        } else {
+          resolve(data)
+        }
+      })
+    }).catch((r) => {
+      reject(new Error(CONNECTION_ERROR_MESSAGE))
+    })
   })
 }
 
@@ -64,5 +71,3 @@ export function getLists () {
     }).catch((r) => reject(new Error(CONNECTION_ERROR_MESSAGE)))
   })
 }
-
-window.getLists = getLists
