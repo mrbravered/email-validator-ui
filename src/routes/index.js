@@ -31,7 +31,7 @@ export default (store) => {
       <IndexRedirect to='lists' />
       <Route path='login' component={LoginView} />
       <Route path='single-email-validation' component={SingleValidationView} onEnter={isAuthenticated(store)} />
-      <Route path='bulk-email-validation' component={BulkValidationView} onEnter={isAuthenticated(store)} />
+      <Route path='lists/new' component={BulkValidationView} onEnter={isAuthenticated(store)} />
       <Route path='lists' component={ListsView} onEnter={onListsEnter(store)} />
       <Route path='lists/:id' component={ListView} onEnter={onListsEnter(store)} />
 
