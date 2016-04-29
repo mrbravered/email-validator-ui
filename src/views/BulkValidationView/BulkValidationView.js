@@ -41,7 +41,7 @@ export class BulkValidation extends React.Component {
             <h1>Bulk email validation</h1>
             <form onSubmit={this.handleSubmit}>
               <div className='form-group'>
-                <button className='btn btn-default' onClick={this.openUploadDialog}>
+                <button type='button' className='btn btn-default' onClick={this.openUploadDialog}>
                   <i className='fa fa-upload'></i> Upload list of e-mail addresses
                 </button>
                 <input type='file' style={{display: 'none'}} ref='fileInput' onChange={this.handleFileInputChange} />
