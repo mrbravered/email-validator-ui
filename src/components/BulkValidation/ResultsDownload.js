@@ -2,6 +2,11 @@ import React, { PropTypes } from 'react'
 import download from 'downloadjs'
 
 export class ResultsDownload extends React.Component {
+
+  static propTypes = {
+    posts: PropTypes.array
+  }
+
   constructor (props) {
     super(props)
     this.handleValidEmailsDownload = this.handleValidEmailsDownload.bind(this)
@@ -9,13 +14,13 @@ export class ResultsDownload extends React.Component {
   }
 
   handleValidEmailsDownload () {
-    const emails = this.props.results.filter((r) => r.status === 'valid').map((r) => r.emailAddress).join('\n')
+    const emails = this.props.posts.filter((r) => r.status === 'valid').map((r) => r.emailAddress).join('\n')
     download(emails, 'validEmails.txt', 'text/plain')
   }
 
   handleAllResultsDownloads () {
     let content = 'emailAddress,status\n'
-    this.props.results.map((r) => { content += `${r.emailAddress},${r.status}\n` })
+    this.props.posts.map((r) => { content += `${r.emailAddress},${r.status}\n` })
     download(content, 'emailValidationResult.csv', 'text/csv')
   }
 
@@ -31,10 +36,6 @@ export class ResultsDownload extends React.Component {
       </div>
     )
   }
-}
-
-ResultsDownload.propTypes = {
-  results: PropTypes.array
 }
 
 export default ResultsDownload

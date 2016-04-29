@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react'
 import ResultRow from './ResultRow'
 
-const ResultsTable = ({ results }) => (
+const ResultsTable = ({ posts }) => (
   <table className='table'>
     <thead>
       <tr>
@@ -10,13 +10,13 @@ const ResultsTable = ({ results }) => (
       </tr>
     </thead>
     <tbody>
-      {results.map((result) => <ResultRow key={result.emailAddress} result={result}/>)}
+      {posts.map((result) => <ResultRow key={result.emailAddress} result={result}/>)}
     </tbody>
   </table>
 )
 
 ResultsTable.propTypes = {
-  results: PropTypes.array
+  posts: PropTypes.array
 }
 
 export default ResultsTable
