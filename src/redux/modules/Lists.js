@@ -1,72 +1,56 @@
+import { getLists } from 'Api'
+
 // Constants
-// export const constants = { }
+export const FETCH_LISTS = 'lists/FETCH_LISTS'
+export const LISTS_RECEIVED = 'lists/LISTS_RECEIVED'
+export const LISTS_FETCH_FAILED = 'lists/LISTS_FETCH_FAILED'
 
 // Action Creators
-// export const actions = { }
+export function receiveLists (lists) {
+  return {
+    type: LISTS_RECEIVED,
+    lists: lists
+  }
+}
+
+export function fetchLists () {
+  return function (dispatch) {
+    dispatch({type: FETCH_LISTS})
+    getLists()
+      .then((lists) => {
+        dispatch(receiveLists(lists))
+      })
+      .catch((error) => {
+        dispatch({type: LISTS_FETCH_FAILED, error: error.message})
+      })
+  }
+}
 
 // Reducer
 export const initialState = {
   isFetching: false,
-  lists: [{
-    'id': '57215d1a2dda56884418e52a',
-    'emailAddresses': [
-      'sjobs@me.com',
-      'angelaveatch@hotmail.com',
-      'alex@spamsux.com'
-    ],
-    'posts': [{
-      'emailAddress': 'sjobs@me.com',
-      'status': 'invalid'
-    }, {
-      'emailAddress': 'angelaveatch@hotmail.com',
-      'status': 'spamtrap'
-    }, {
-      'emailAddress': 'alex@spamsux.com',
-      'status': 'valid'
-    }],
-    'status': 'processed',
-    'report': {
-      'qualityScore': 0,
-      'spamtrap': 1,
-      'role-based': 0,
-      'accept all': 0,
-      'unknown': 0,
-      'invalid': 1,
-      'valid': 1,
-      'total': 3
-    }
-  }, {
-    'id': '57215d8f2dda56884418e52b',
-    'emailAddresses': [
-      'sjobs@me.com',
-      'angelaveatch@hotmail.com',
-      'alex@spamsux.com'
-    ],
-    'posts': [{
-      'emailAddress': 'sjobs@me.com',
-      'status': 'invalid'
-    }, {
-      'emailAddress': 'angelaveatch@hotmail.com',
-      'status': 'spamtrap'
-    }, {
-      'emailAddress': 'alex@spamsux.com',
-      'status': 'valid'
-    }],
-    'status': 'processed',
-    'report': {
-      'qualityScore': 0,
-      'spamtrap': 1,
-      'role-based': 0,
-      'accept all': 0,
-      'unknown': 0,
-      'invalid': 1,
-      'valid': 1,
-      'total': 3
-    }
-  }]
+  error: '',
+  lists: []
 }
 export default function (state = initialState, action) {
   switch (action.type) {
+    case FETCH_LISTS:
+      return {
+        ...state,
+        isFetching: true
+      }
+    case LISTS_RECEIVED:
+      return {
+        isFetching: false,
+        lists: action.lists,
+        error: ''
+      }
+    case LISTS_FETCH_FAILED:
+      return {
+        ...state,
+        isFetching: false,
+        error: action.error
+      }
     default: return state
   }
 }
