@@ -44,3 +44,25 @@ export function validateBulk (emails) {
     }, 50)
   })
 }
+
+export function getLists () {
+  const token = localStorage.getItem('APIKey')
+  return new Promise((resolve, reject) => {
+    fetch(BASE_URL + 'lists', {
+      mode: 'cors',
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    }).then((r) => {
+      r.json().then((data) => {
+        if (data.message) {
+          reject(new Error(INVALID_APIKEY_MESSAGE))
+        } else {
+          resolve(data)
+        }
+      })
+    }).catch((r) => reject(new Error(CONNECTION_ERROR_MESSAGE)))
+  })
+}
+
+window.getLists = getLists
