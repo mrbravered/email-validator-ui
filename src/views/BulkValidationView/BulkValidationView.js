@@ -1,8 +1,5 @@
 import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
-import ResultsTable from 'components/BulkValidation/ResultsTable'
-import ResultStats from 'components/BulkValidation/ResultStats'
-import ResultsDownload from 'components/BulkValidation/ResultsDownload'
 import { updateEmailsList, validate } from 'redux/modules/BulkValidation'
 import readList from 'utils/listReader'
 
@@ -35,25 +32,8 @@ export class BulkValidation extends React.Component {
     this.props.onSubmit()
   }
 
-  get resultsSection () {
-    const { results } = this.props
-
-    const validCount = results.filter((r) => r.status === 'valid').length
-    const invalidCount = results.filter((r) => r.status === 'invalid').length
-    const unknownCount = results.filter((r) => r.status === 'unknown').length
-
-    return (
-      <div>
-        <ResultsDownload results={results} />
-        <ResultStats validCount={validCount} invalidCount={invalidCount} unknownCount={unknownCount} />
-        <ResultsTable results={results} />
-
-      </div>
-    )
-  }
-
   render () {
-    const { emailsList, isFetching, results, error } = this.props
+    const { emailsList, isFetching, error } = this.props
     return (
       <div className='container'>
         <div className='row'>
@@ -85,10 +65,6 @@ export class BulkValidation extends React.Component {
               </div>
             </form>
             {error ? <div className='alert alert-danger'>Error: {error}</div> : ''}
-            <div className='page-header'>
-              <h2>Results</h2>
-            </div>
-            {results.length !== 0 ? this.resultsSection : this.noResultsMessage}
           </div>
         </div>
       </div>
