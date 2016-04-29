@@ -21,7 +21,7 @@ const isAuthenticated = (store) => {
 const onListsEnter = (store) => {
   return (nextState, replace) => {
     store.dispatch(fetchLists())
-    isAuthenticated(nextState, replace)
+    isAuthenticated(store)(nextState, replace)
   }
 }
 
