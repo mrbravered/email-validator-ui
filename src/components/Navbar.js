@@ -26,11 +26,11 @@ const Navbar = ({auth, onLogoutClick}) => {
 
         <div className='collapse navbar-collapse' id='bs-example-navbar-collapse-1'>
           <ul className='nav navbar-nav navbar-right'>
-            <li className='active'><Link to={'/single-email-validation'}>Single Email Validation</Link></li>
-            <li><Link to={'/bulk-email-validation'}>Bulk Email Validation</Link></li>
+            <li className='active'><Link to={'/app/single-email-validation'}>Single Email Validation</Link></li>
+            <li><Link to={'/app/bulk-email-validation'}>Bulk Email Validation</Link></li>
             {auth.isLoggedIn
             ? <li><a href='#' onClick={onLogoutLinkClick}>Logout</a></li>
-            : <li><Link to={'/login'}>Login</Link></li>}
+            : <li><Link to={'/app/login'}>Login</Link></li>}
           </ul>
         </div>
       </div>

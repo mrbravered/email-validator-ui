@@ -9,7 +9,7 @@ export function login (token) {
   return (dispatch) => {
     localStorage.setItem('APIKey', token)
     dispatch({type: LOGIN})
-    dispatch(push('/single-email-validation'))
+    dispatch(push('/app/single-email-validation'))
   }
 }
 
@@ -17,7 +17,7 @@ export function logout () {
   return (dispatch) => {
     localStorage.removeItem('APIKey')
     dispatch({type: LOGOUT})
-    dispatch(push('/login'))
+    dispatch(push('/app/login'))
   }
 }
 

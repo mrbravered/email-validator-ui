@@ -13,7 +13,7 @@ import { fetchLists } from 'redux/modules/Lists'
 const isAuthenticated = (store) => {
   return (nextState, replace) => {
     if (!store.getState().auth.isLoggedIn) {
-      replace({pathname: '/login'})
+      replace({pathname: '/app/login'})
     }
   }
 }
