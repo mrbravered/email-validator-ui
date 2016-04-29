@@ -15,7 +15,7 @@ export class ResultsContainer extends React.Component {
 
     return (
       <div>
-        <ResultsDownload list={list.posts} />
+        <ResultsDownload posts={list.posts} />
         <ResultStats report={list.report} />
         <ResultsTable posts={list.posts} />
       </div>
