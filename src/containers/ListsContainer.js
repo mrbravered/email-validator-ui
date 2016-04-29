@@ -1,5 +1,6 @@
 import { connect } from 'react-redux'
 
+import { downloadListAllResults } from 'redux/modules/Lists'
 import Lists from 'components/Lists'
 
 const mapStateToProps = (state) => {
@@ -8,7 +9,9 @@ const mapStateToProps = (state) => {
   }
 }
 const mapDispatchToProps = (dispatch) => {
-  return {}
+  return {
+    onDownloadClick: (id) => dispatch(downloadListAllResults(id))
+  }
 }
 
 export default connect(
