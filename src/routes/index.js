@@ -1,5 +1,5 @@
 import React from 'react'
-import { Route, IndexRedirect } from 'react-router'
+import { Route, IndexRedirect, Redirect } from 'react-router'
 import CoreLayout from 'layouts/CoreLayout/CoreLayout'
 
 import LoginView from 'views/LoginView'
@@ -28,12 +28,14 @@ const onListsEnter = (store) => {
 export default (store) => {
   return (
     <Route path='/app' component={CoreLayout}>
-      <IndexRedirect to='single-email-validation' />
+      <IndexRedirect to='lists' />
       <Route path='login' component={LoginView} />
       <Route path='single-email-validation' component={SingleValidationView} onEnter={isAuthenticated(store)} />
       <Route path='bulk-email-validation' component={BulkValidationView} onEnter={isAuthenticated(store)} />
       <Route path='lists' component={ListsView} onEnter={onListsEnter(store)} />
       <Route path='lists/:id' component={ListView} onEnter={isAuthenticated(store)} />
+
+      <Redirect from='/' to='/app' />
     </Route>
   )
 }
