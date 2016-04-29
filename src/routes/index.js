@@ -8,20 +8,32 @@ import BulkValidationView from 'views/BulkValidationView'
 import ListsView from 'views/ListsView'
 import ListView from 'views/ListView'
 
-export default (store) => {
-  const isAuthenticated = (nextState, replace) => {
+import { fetchLists } from 'redux/modules/Lists'
+
+const isAuthenticated = (store) => {
+  return (nextState, replace) => {
     if (!store.getState().auth.isLoggedIn) {
       replace({pathname: '/login'})
     }
   }
+}
+
+const onListsEnter = (store) => {
+  return (nextState, replace) => {
+    store.dispatch(fetchLists())
+    isAuthenticated(nextState, replace)
+  }
+}
+
+export default (store) => {
   return (
     <Route path='/app' component={CoreLayout}>
       <IndexRedirect to='single-email-validation' />
       <Route path='login' component={LoginView} />
-      <Route path='single-email-validation' component={SingleValidationView} onEnter={isAuthenticated} />
-      <Route path='bulk-email-validation' component={BulkValidationView} onEnter={isAuthenticated} />
-      <Route path='lists' component={ListsView} onEnter={isAuthenticated} />
-      <Route path='lists/:id' component={ListView} onEnter={isAuthenticated} />
+      <Route path='single-email-validation' component={SingleValidationView} onEnter={isAuthenticated(store)} />
+      <Route path='bulk-email-validation' component={BulkValidationView} onEnter={isAuthenticated(store)} />
+      <Route path='lists' component={ListsView} onEnter={onListsEnter(store)} />
+      <Route path='lists/:id' component={ListView} onEnter={isAuthenticated(store)} />
     </Route>
   )
 }
