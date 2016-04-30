@@ -1,3 +1,5 @@
+import 'whatwg-fetch'
+
 const INVALID_APIKEY_MESSAGE = 'Invalid APIKey. Logout and login again with a valid API Key.'
 const CONNECTION_ERROR_MESSAGE = 'There\'s seem to be a problem with your connection'
 
