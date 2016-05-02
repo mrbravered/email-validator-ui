@@ -14,13 +14,15 @@ function * fetchLists (action) {
 }
 
 function * downloadListValidAddresses (action) {
-  const list = yield call(getListPosts, action.listID)
+  const downloadPromise = getListPosts(action.listID)
+  const list = yield downloadPromise
   const emails = list.posts.filter((r) => r.status === 'valid').map((r) => r.emailAddress)
   download(emails.join('\n'), 'validEmails.csv', 'text/csv')
 }
 
 function * downloadListAllResults (action) {
-  const list = yield call(getListPosts, action.listID)
+  const downloadPromise = getListPosts(action.listID)
+  const list = yield downloadPromise
   let content = 'emailAddress,status\n'
   list.posts.map((r) => { content += `${r.emailAddress},${r.status}\n` })
   download(content, 'emailValidationResult.csv', 'text/csv')
