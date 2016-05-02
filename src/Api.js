@@ -65,6 +65,35 @@ export function getLists () {
   .then(parseJSON)
 }
 
+export function getListPosts (listID, onProgress) {
+  const token = getToken()
+
+  return new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest()
+    xhr.open('GET', `${BASE_URL}list/${listID}`, true)
+    xhr.responseType = 'json'
+    xhr.setRequestHeader('Authorization', `Bearer ${token}`)
+
+    xhr.onload = (e) => {
+      if (xhr.status >= 200 && xhr.status < 300) {
+        resolve(xhr.response)
+      } else {
+        reject(new Error(xhr.statusText))
+      }
+    }
+
+    xhr.onprogress = onProgress
+
+    xhr.onerror = (e) => {
+      reject(new Error(xhr.statusText))
+    }
+
+    xhr.send()
+  })
+}
+
+window.getListPosts = getListPosts
+
 export function authorize (token) {
   return fetch(BASE_URL + 'lists/summary', {
     mode: 'cors',

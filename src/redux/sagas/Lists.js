@@ -1,20 +1,8 @@
 import { takeLatest } from 'redux-saga'
-import { call, put, select } from 'redux-saga/effects'
-import { getLists } from 'Api'
+import { call, put } from 'redux-saga/effects'
+import { getLists, getListPosts } from 'Api'
 import download from 'downloadjs'
 import * as duck from '../modules/Lists'
-
-function getValidAddresses (state, listID) {
-  const list = state.lists.lists.filter((l) => l.id === listID)[0]
-  return list.posts.filter((r) => r.status === 'valid').map((r) => r.emailAddress)
-}
-
-function getAllResults (state, listID) {
-  const list = state.lists.lists.filter((l) => l.id === listID)[0]
-  let content = 'emailAddress,status\n'
-  list.posts.map((r) => { content += `${r.emailAddress},${r.status}\n` })
-  return content
-}
 
 function * fetchLists (action) {
   try {
@@ -26,13 +14,16 @@ function * fetchLists (action) {
 }
 
 function * downloadListValidAddresses (action) {
-  const emails = yield select(getValidAddresses, action.listID)
+  const list = yield call(getListPosts, action.listID)
+  const emails = list.posts.filter((r) => r.status === 'valid').map((r) => r.emailAddress)
   download(emails.join('\n'), 'validEmails.csv', 'text/csv')
 }
 
 function * downloadListAllResults (action) {
-  const results = yield select(getAllResults, action.listID)
-  download(results, 'emailValidationResult.csv', 'text/csv')
+  const list = yield call(getListPosts, action.listID)
+  let content = 'emailAddress,status\n'
+  list.posts.map((r) => { content += `${r.emailAddress},${r.status}\n` })
+  download(content, 'emailValidationResult.csv', 'text/csv')
 }
 
 export default function * listsSaga () {
