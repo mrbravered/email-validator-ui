@@ -2,7 +2,6 @@ import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
 
 import ResultsDownloadContainer from 'containers/ResultsDownloadContainer'
-import ResultsTable from 'components/BulkValidation/ResultsTable'
 import ResultStats from 'components/BulkValidation/ResultStats'
 import HeaderWithRightSpinner from 'components/HeaderWithRightSpinner'
 
@@ -19,9 +18,8 @@ export class ResultsContainer extends React.Component {
       return (
         <div>
           <HeaderWithRightSpinner title={id} loading={isFetching} />
-          <ResultsDownloadContainer id={list.id} />
           <ResultStats report={list.report} />
-          <ResultsTable posts={list.posts} />
+          <ResultsDownloadContainer id={list.id} />
         </div>
       )
     } else {
