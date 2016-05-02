@@ -1,6 +1,8 @@
 import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { updateEmailsList, validate } from 'redux/modules/BulkValidation'
+import unique from 'lodash/uniq'
+import compact from 'lodash/compact'
+import { validate } from 'redux/modules/BulkValidation'
 import readList from 'utils/listReader'
 
 export class BulkValidation extends React.Component {
@@ -9,18 +11,8 @@ export class BulkValidation extends React.Component {
 
   constructor (props) {
     super(props)
-    this.handleEmailsListInputChange = this.handleEmailsListInputChange.bind(this)
-    this.handleFileInputChange = this.handleFileInputChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
     this.openUploadDialog = this.openUploadDialog.bind(this)
-  }
-
-  handleEmailsListInputChange (e) {
-    this.props.onEmailsListInputChange(e.target.value)
-  }
-
-  handleFileInputChange (e) {
-    readList(e.target.files[0]).then((textList) => this.props.onEmailsListInputChange(textList))
   }
 
   openUploadDialog () {
@@ -29,11 +21,26 @@ export class BulkValidation extends React.Component {
 
   handleSubmit (e) {
     e.preventDefault()
-    this.props.onSubmit()
+
+    // Build email addresses list, a merge between the content
+    // of the file and the content of the textarea
+    const textareaValue = this.refs.textarea.value
+
+    let fileValue = ''
+    if (this.refs.fileInput.files.length > 0) {
+      fileValue = readList(this.refs.fileInput.files[0])
+    }
+
+    Promise.all([textareaValue, fileValue]).then((values) => {
+      const text = values.join('\n')
+      const trimmed = text.trim()
+      const emailsArray = compact(unique(trimmed.split('\n')))
+      this.props.onSubmit(emailsArray)
+    })
   }
 
   render () {
-    const { emailsList, isFetching, error } = this.props
+    const { isFetching, error } = this.props
     return (
       <div className='container'>
         <div className='row'>
@@ -44,21 +51,19 @@ export class BulkValidation extends React.Component {
                 <button type='button' className='btn btn-default' onClick={this.openUploadDialog}>
                   <i className='fa fa-upload'></i> Upload list of e-mail addresses
                 </button>
-                <input type='file' style={{display: 'none'}} ref='fileInput' onChange={this.handleFileInputChange} />
+                <input type='file' style={{display: 'none'}} ref='fileInput' />
               </div>
               <div className='form-group'>
                 <textarea
                   disabled={isFetching}
                   rows={6}
                   className='form-control'
-                  ref='emailsListInput'
-                  onChange={this.handleEmailsListInputChange}
-                  value={emailsList}
+                  ref='textarea'
                 ></textarea>
               </div>
               <div className='form-group'>
                 <button
-                  disabled={emailsList.length === 0}
+                  // disabled={this.refs.fileInput.files.length === 0 || this.refs.textarea.value.length === 0}
                   type='submit'
                   className='btn btn-primary btn-block'
                 >Validate</button>
@@ -74,10 +79,7 @@ export class BulkValidation extends React.Component {
 
 BulkValidation.propTypes = {
   error: PropTypes.string,
-  results: PropTypes.array,
-  emailsList: PropTypes.string,
   isFetching: PropTypes.bool,
-  onEmailsListInputChange: PropTypes.func,
   onSubmit: PropTypes.func
 }
 
@@ -86,7 +88,6 @@ const mapStateToProps = (state) => {
 }
 const mapDispatchToProps = (dispatch) => {
   return {
-    onEmailsListInputChange: (emailsList) => dispatch(updateEmailsList(emailsList)),
     onSubmit: (emailsList) => dispatch(validate(emailsList))
   }
 }

@@ -13,9 +13,8 @@ export function updateEmailsList (emailsList) {
   }
 }
 
-// Thunk
-export function validate () {
-  return {type: VALIDATE_REQUESTED}
+export function validate (emailsArray) {
+  return {type: VALIDATE_REQUESTED, emailAddresses: emailsArray}
 }
 
 // Reducer
