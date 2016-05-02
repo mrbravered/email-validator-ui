@@ -1,75 +1,84 @@
 import 'whatwg-fetch'
 
 const INVALID_APIKEY_MESSAGE = 'Invalid APIKey. Logout and login again with a valid API Key.'
-const CONNECTION_ERROR_MESSAGE = 'There\'s seem to be a problem with your connection'
-
 const BASE_URL = 'http://listquality.com:3000/api/'
 
-// Using real API. Untested (No CORS)
-export function validateEmail (email) {
-  const token = localStorage.getItem('APIKey')
-  return new Promise((resolve, reject) => {
-    fetch(BASE_URL + `post?emailAddress=${email}`, {
-      mode: 'cors',
-      headers: {
-        'Authorization': `Bearer ${token}`
-      }
-    }).then((r) => {
-      r.json().then((data) => {
-        if (data.message) {
-          reject(new Error(INVALID_APIKEY_MESSAGE))
-        } else {
-          resolve(data)
-        }
-      })
-    }).catch((r) => reject(new Error(CONNECTION_ERROR_MESSAGE)))
-  })
+function checkStatus (response) {
+  if (response.status >= 200 && response.status < 300) {
+    return response
+  } else {
+    const error = new Error()
+    if (response.status === 401) {
+      error.message = INVALID_APIKEY_MESSAGE
+    } else {
+      error.message = response.statusText
+    }
+    error.response = response
+    throw error
+  }
 }
 
-// Mock function since is not supported by the API yet
+function parseJSON (response) {
+  return response.json()
+}
+
+const getToken = () => localStorage.getItem('APIKey')
+
+export function validateEmail (email) {
+  const token = getToken()
+  return fetch(BASE_URL + `post?emailAddress=${email}`, {
+    mode: 'cors',
+    headers: {
+      'Authorization': `Bearer ${token}`
+    }
+  })
+  .then(checkStatus)
+  .then(parseJSON)
+}
+
 export function validateBulk (emails) {
-  const token = localStorage.getItem('APIKey')
-  return new Promise((resolve, reject) => {
-    fetch(BASE_URL + 'list', {
-      mode: 'cors',
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        emailAddresses: emails
-      })
-    }).then((r) => {
-      r.json().then((data) => {
-        if (data.message) {
-          reject(new Error(INVALID_APIKEY_MESSAGE))
-        } else {
-          resolve(data)
-        }
-      })
-    }).catch((r) => {
-      reject(new Error(CONNECTION_ERROR_MESSAGE))
+  const token = getToken()
+  return fetch(BASE_URL + 'list', {
+    mode: 'cors',
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      emailAddresses: emails
     })
   })
+  .then(checkStatus)
+  .then(parseJSON)
 }
 
 export function getLists () {
-  const token = localStorage.getItem('APIKey')
-  return new Promise((resolve, reject) => {
-    fetch(BASE_URL + 'lists', {
-      mode: 'cors',
-      headers: {
-        'Authorization': `Bearer ${token}`
-      }
-    }).then((r) => {
-      r.json().then((data) => {
-        if (data.message) {
-          reject(new Error(INVALID_APIKEY_MESSAGE))
-        } else {
-          resolve(data)
-        }
-      })
-    }).catch((r) => reject(new Error(CONNECTION_ERROR_MESSAGE)))
+  const token = getToken()
+  return fetch(BASE_URL + 'lists/summary', {
+    mode: 'cors',
+    headers: {
+      'Authorization': `Bearer ${token}`
+    }
+  })
+  .then(checkStatus)
+  .then(parseJSON)
+}
+
+export function authorize (token) {
+  return fetch(BASE_URL + 'lists/summary', {
+    mode: 'cors',
+    headers: {
+      'Authorization': `Bearer ${token}`
+    }
+  })
+  .then((response) => {
+    if (response.status === 401) {
+      return false
+    } else {
+      return true
+    }
   })
 }
+
+window.authorize = authorize
