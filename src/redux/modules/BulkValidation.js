@@ -1,14 +1,9 @@
-import { validateBulk } from 'Api'
-import unique from 'lodash/uniq'
-import compact from 'lodash/compact'
-
-import { push } from 'react-router-redux'
-
 // Constants
-const UPDATE_EMAILS_LIST = 'email-validator-ui/bulk-validation/UPDATE_EMAILS_LIST'
-const UPLOADING_LIST = 'bulk-validation/UPLOADING_LIST'
-const UPLOAD_FAILED = 'bulk-validation/UPLOAD_FAILED'
-const UPLOAD_SUCEEDED = 'bulk-validation/UPLOAD_SUCEEDED'
+export const UPDATE_EMAILS_LIST = 'bulk-validation/UPDATE_EMAILS_LIST'
+export const UPLOADING_LIST = 'bulk-validation/UPLOADING_LIST'
+export const UPLOAD_FAILED = 'bulk-validation/UPLOAD_FAILED'
+export const UPLOAD_SUCEEDED = 'bulk-validation/UPLOAD_SUCEEDED'
+export const VALIDATE_REQUESTED = 'bulk-validation/VALIDATE_REQUESTED'
 
 // Action Creators
 export function updateEmailsList (emailsList) {
@@ -20,17 +15,7 @@ export function updateEmailsList (emailsList) {
 
 // Thunk
 export function validate () {
-  return function (dispatch, getState) {
-    // Transform emailsList
-    const emailsArray = compact(unique(getState().bulkValidation.emailsList.trim().split('\n')))
-    dispatch({type: UPLOADING_LIST})
-    return validateBulk(emailsArray).then((result) => {
-      dispatch({type: UPLOAD_SUCEEDED})
-      dispatch(push('/app/lists'))
-    }).catch((error) => {
-      dispatch({type: UPLOAD_FAILED, error: error.message})
-    })
-  }
+  return {type: VALIDATE_REQUESTED}
 }
 
 // Reducer

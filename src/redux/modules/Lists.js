@@ -1,10 +1,9 @@
-import { getLists } from 'Api'
-import download from 'downloadjs'
-
 // Constants
 export const FETCH_LISTS = 'lists/FETCH_LISTS'
 export const LISTS_RECEIVED = 'lists/LISTS_RECEIVED'
 export const LISTS_FETCH_FAILED = 'lists/LISTS_FETCH_FAILED'
+export const DOWNLOAD_LIST_VALID = 'lists/DOWNLOAD_LIST_VALID'
+export const DOWNLOAD_LIST_ALL_RESULTS = 'lists/DOWNLOAD_LIST_ALL_RESULTS'
 
 // Action Creators
 export function receiveLists (lists) {
@@ -15,32 +14,20 @@ export function receiveLists (lists) {
 }
 
 export function fetchLists () {
-  return function (dispatch) {
-    dispatch({type: FETCH_LISTS})
-    getLists()
-      .then((lists) => {
-        dispatch(receiveLists(lists))
-      })
-      .catch((error) => {
-        dispatch({type: LISTS_FETCH_FAILED, error: error.message})
-      })
-  }
+  return {type: FETCH_LISTS}
 }
 
 export function downloadListValidAddresses (listID) {
-  return function (dispatch, getState) {
-    const list = getState().lists.lists.filter((l) => l.id === listID)[0]
-    const emails = list.posts.filter((r) => r.status === 'valid').map((r) => r.emailAddress).join('\n')
-    download(emails, 'validEmails.txt', 'text/plain')
+  return {
+    type: DOWNLOAD_LIST_VALID,
+    listID: listID
   }
 }
 
 export function downloadListAllResults (listID) {
-  return function (dispatch, getState) {
-    const list = getState().lists.lists.filter((l) => l.id === listID)[0]
-    let content = 'emailAddress,status\n'
-    list.posts.map((r) => { content += `${r.emailAddress},${r.status}\n` })
-    download(content, 'emailValidationResult.csv', 'text/csv')
+  return {
+    type: DOWNLOAD_LIST_ALL_RESULTS,
+    listID: listID
   }
 }
 

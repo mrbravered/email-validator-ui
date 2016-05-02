@@ -1,11 +1,10 @@
-import { validateEmail } from 'Api'
 import { LOGIN } from './Auth'
 // Constants
-const UPDATE_EMAIL = 'email-validator-ui/single-validation/UPDATE_EMAIL'
+export const UPDATE_EMAIL = 'single-validation/UPDATE_EMAIL'
 
-const VALIDATE_REQUESTED = 'email-validator-ui/single-validation/VALIDATE_REQUESTED'
-const VALIDATE_RECEIVED = 'email-validator-ui/single-validation/VALIDATE_RECEIVED'
-const VALIDATE_FAILED = 'email-validator-ui/single-validation/VALIDATE_FAILED'
+export const VALIDATE_REQUESTED = 'single-validation/VALIDATE_REQUESTED'
+export const VALIDATE_RECEIVED = 'single-validation/VALIDATE_RECEIVED'
+export const VALIDATE_FAILED = 'single-validation/VALIDATE_FAILED'
 
 // Action Creators
 export function updateEmail (emailAddress) {
@@ -37,16 +36,8 @@ export function failedValidation (error) {
   }
 }
 
-// Thunk
 export function validate (email) {
-  return function (dispatch) {
-    dispatch(requestValidation(email))
-    return validateEmail(email).then((result) => {
-      dispatch(receivedValidation(result.emailAddress, result.status))
-    }).catch((e) => {
-      dispatch(failedValidation(e.message))
-    })
-  }
+  return requestValidation(email)
 }
 
 // Reducer

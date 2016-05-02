@@ -1,24 +1,14 @@
-import { push } from 'react-router-redux'
-
 // Constants
-export const LOGIN = 'email-validator-ui/auth/LOGIN'
-export const LOGOUT = 'email-validator-ui/auth/LOGOUT'
+export const LOGIN = 'auth/LOGIN'
+export const LOGOUT = 'auth/LOGOUT'
 
 // Action Creators
 export function login (token) {
-  return (dispatch) => {
-    localStorage.setItem('APIKey', token)
-    dispatch({type: LOGIN})
-    dispatch(push('/app/single-email-validation'))
-  }
+  return {type: LOGIN, token: token}
 }
 
 export function logout () {
-  return (dispatch) => {
-    localStorage.removeItem('APIKey')
-    dispatch({type: LOGOUT})
-    dispatch(push('/app/login'))
-  }
+  return {type: LOGOUT}
 }
 
 // Reducer

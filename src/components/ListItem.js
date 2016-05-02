@@ -14,7 +14,6 @@ class ListItem extends React.Component {
   }
 
   onDownloadClick () {
-    console.log ('rar')
     this.props.onDownloadClick(this.props.list.id)
   }
 
