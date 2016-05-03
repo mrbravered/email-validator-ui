@@ -1,3 +1,5 @@
+import orderBy from 'lodash/orderBy'
+
 // Constants
 export const FETCH_LISTS = 'lists/FETCH_LISTS'
 export const LISTS_RECEIVED = 'lists/LISTS_RECEIVED'
@@ -40,7 +42,7 @@ export default function (state = initialState, action) {
     case LISTS_RECEIVED:
       return {
         isFetching: false,
-        lists: action.lists,
+        lists: orderBy(action.lists, ['date'], ['desc']),
         error: ''
       }
     case LISTS_FETCH_FAILED:
