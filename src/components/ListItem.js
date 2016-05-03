@@ -26,7 +26,12 @@ class ListItem extends React.Component {
         alignItems: 'center'
       },
       left: {
-        flex: 1
+        flex: 1,
+        paddingRight: '2em'
+      },
+      metadata: {
+        display: 'flex',
+        justifyContent: 'space-between'
       }
     }
     return (
@@ -34,7 +39,10 @@ class ListItem extends React.Component {
         <div className='panel-body' style={styles.panelBody}>
           <div style={styles.left}>
             <Link to={`/app/lists/${list.id}`}><h3>{list.id}</h3></Link>
-            <div>{list.report.total} email addresses</div>
+            <div style={styles.metadata}>
+              <div>{list.report.total} email addresses</div>
+              <div><strong>Quality score:</strong> {list.report.qualityScore}</div>
+            </div>
           </div>
           <div>
             <button className='btn btn-default' onClick={this.onDownloadClick}>
