@@ -41,7 +41,7 @@ class ListItem extends React.Component {
             <Link to={`/app/lists/${list.id}`}><h3>{list.id}</h3></Link>
             <div style={styles.metadata}>
               <div>{list.report.total} email addresses</div>
-              <div><strong>Quality score:</strong> {list.report.qualityScore}</div>
+              <div>Quality score: <strong>{list.report.qualityScore}</strong></div>
             </div>
           </div>
           <div>
