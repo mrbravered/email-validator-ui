@@ -4,6 +4,7 @@ import unique from 'lodash/uniq'
 import compact from 'lodash/compact'
 import { validate } from 'redux/modules/BulkValidation'
 import readList from 'utils/listReader'
+import ProgressBar from 'components/ProgressBar'
 
 export class BulkValidation extends React.Component {
 
@@ -40,7 +41,7 @@ export class BulkValidation extends React.Component {
   }
 
   render () {
-    const { isFetching, error } = this.props
+    const { uploading, error, uploadProgress } = this.props
     return (
       <div className='container'>
         <div className='row'>
@@ -48,19 +49,22 @@ export class BulkValidation extends React.Component {
             <h1>Bulk email validation</h1>
             <form onSubmit={this.handleSubmit}>
               <div className='form-group'>
-                <button type='button' className='btn btn-default' onClick={this.openUploadDialog}>
+                <button type='button' className='btn btn-default' disabled={uploading} onClick={this.openUploadDialog}>
                   <i className='fa fa-upload'></i> Upload list of e-mail addresses
                 </button>
                 <input type='file' style={{display: 'none'}} ref='fileInput' />
               </div>
               <div className='form-group'>
                 <textarea
-                  disabled={isFetching}
+                  disabled={uploading}
                   rows={6}
                   className='form-control'
                   ref='textarea'
                 ></textarea>
               </div>
+
+              {uploading ? <ProgressBar {...uploadProgress} /> : ''}
+
               <div className='form-group'>
                 <button
                   // disabled={this.refs.fileInput.files.length === 0 || this.refs.textarea.value.length === 0}
@@ -79,8 +83,9 @@ export class BulkValidation extends React.Component {
 
 BulkValidation.propTypes = {
   error: PropTypes.string,
-  isFetching: PropTypes.bool,
-  onSubmit: PropTypes.func
+  uploading: PropTypes.bool,
+  onSubmit: PropTypes.func,
+  uploadProgress: PropTypes.object
 }
 
 const mapStateToProps = (state) => {

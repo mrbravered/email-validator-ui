@@ -4,6 +4,7 @@ export const UPLOADING_LIST = 'bulk-validation/UPLOADING_LIST'
 export const UPLOAD_FAILED = 'bulk-validation/UPLOAD_FAILED'
 export const UPLOAD_SUCEEDED = 'bulk-validation/UPLOAD_SUCEEDED'
 export const VALIDATE_REQUESTED = 'bulk-validation/VALIDATE_REQUESTED'
+export const UPDATE_UPLOAD_PROGRESS = 'bulk-validation/UPDATE_UPLOAD_PROGRESS'
 
 // Action Creators
 export function updateEmailsList (emailsList) {
@@ -21,7 +22,8 @@ export function validate (emailsArray) {
 export const initialState = {
   uploading: false,
   emailsList: '',
-  error: ''
+  error: '',
+  uploadProgress: {}
 }
 export default function (state = initialState, action) {
   switch (action.type) {
@@ -35,12 +37,18 @@ export default function (state = initialState, action) {
         ...state,
         uploading: true
       }
+    case UPDATE_UPLOAD_PROGRESS:
+      return {
+        ...state,
+        uploadProgress: action.progress
+      }
     case UPLOAD_SUCEEDED:
       return {
         ...state,
         emailsList: '',
         uploading: false,
-        error: ''
+        error: '',
+        uploadProgress: initialState.uploadProgress
       }
     case UPLOAD_FAILED:
       return {

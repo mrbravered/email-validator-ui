@@ -36,21 +36,29 @@ export function validateEmail (email) {
   .then(parseJSON)
 }
 
-export function validateBulk (emails) {
+export function validateBulk (emails, onProgress, onSuccess, onError) {
   const token = getToken()
-  return fetch(BASE_URL + 'list', {
-    mode: 'cors',
-    method: 'POST',
-    headers: {
-      'Authorization': `Bearer ${token}`,
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      emailAddresses: emails
-    })
-  })
-  .then(checkStatus)
-  .then(parseJSON)
+  const xhr = new XMLHttpRequest()
+  xhr.open('POST', BASE_URL + 'list', true)
+  xhr.responseType = 'json'
+  xhr.setRequestHeader('Authorization', `Bearer ${token}`)
+  xhr.setRequestHeader('Content-Type', 'application/json')
+
+  xhr.onload = (e) => {
+    if (xhr.status >= 200 && xhr.status < 300) {
+      onSuccess(xhr.response)
+    } else {
+      onError(new Error(xhr.statusText))
+    }
+  }
+
+  xhr.upload.onprogress = onProgress
+
+  xhr.onerror = (e) => onError
+
+  xhr.send(JSON.stringify({emailAddresses: emails}))
+
+  return () => xhr.abort()
 }
 
 export function getLists () {
