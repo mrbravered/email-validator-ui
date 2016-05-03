@@ -2,8 +2,7 @@
 export const FETCH_LISTS = 'lists/FETCH_LISTS'
 export const LISTS_RECEIVED = 'lists/LISTS_RECEIVED'
 export const LISTS_FETCH_FAILED = 'lists/LISTS_FETCH_FAILED'
-export const DOWNLOAD_LIST_VALID = 'lists/DOWNLOAD_LIST_VALID'
-export const DOWNLOAD_LIST_ALL_RESULTS = 'lists/DOWNLOAD_LIST_ALL_RESULTS'
+export const DOWNLOAD_LIST = 'lists/DOWNLOAD_LIST'
 
 // Action Creators
 export function receiveLists (lists) {
@@ -17,17 +16,11 @@ export function fetchLists () {
   return {type: FETCH_LISTS}
 }
 
-export function downloadListValidAddresses (listID) {
+export function downloadList (listID, filter = 'ALL') {
   return {
-    type: DOWNLOAD_LIST_VALID,
-    listID: listID
-  }
-}
-
-export function downloadListAllResults (listID) {
-  return {
-    type: DOWNLOAD_LIST_ALL_RESULTS,
-    listID: listID
+    type: DOWNLOAD_LIST,
+    listID: listID,
+    filter: filter
   }
 }
 

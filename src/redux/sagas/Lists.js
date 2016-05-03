@@ -1,7 +1,6 @@
 import { takeLatest } from 'redux-saga'
 import { call, put } from 'redux-saga/effects'
-import { getLists, getListPosts } from 'Api'
-import download from 'downloadjs'
+import { getLists, downloadList } from 'Api'
 import * as duck from '../modules/Lists'
 
 function * fetchLists (action) {
@@ -13,25 +12,16 @@ function * fetchLists (action) {
   }
 }
 
-function * downloadListValidAddresses (action) {
-  const downloadPromise = getListPosts(action.listID)
-  const list = yield downloadPromise
-  const emails = list.posts.filter((r) => r.status === 'valid').map((r) => r.emailAddress)
-  download(emails.join('\n'), 'validEmails.csv', 'text/csv')
-}
-
-function * downloadListAllResults (action) {
-  const downloadPromise = getListPosts(action.listID)
-  const list = yield downloadPromise
-  let content = 'emailAddress,status\n'
-  list.posts.map((r) => { content += `${r.emailAddress},${r.status}\n` })
-  download(content, 'emailValidationResult.csv', 'text/csv')
+function * downloadListSaga (action) {
+  try {
+    yield call(downloadList, action.listID, action.filter)
+  } catch (error) {
+  }
 }
 
 export default function * listsSaga () {
   yield [
     takeLatest(duck.FETCH_LISTS, fetchLists),
-    takeLatest(duck.DOWNLOAD_LIST_VALID, downloadListValidAddresses),
-    takeLatest(duck.DOWNLOAD_LIST_ALL_RESULTS, downloadListAllResults)
+    takeLatest(duck.DOWNLOAD_LIST, downloadListSaga)
   ]
 }

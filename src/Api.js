@@ -100,8 +100,6 @@ export function getListPosts (listID, onProgress) {
   })
 }
 
-window.getListPosts = getListPosts
-
 export function authorize (token) {
   return fetch(BASE_URL + 'lists/summary', {
     mode: 'cors',
@@ -118,4 +116,17 @@ export function authorize (token) {
   })
 }
 
-window.authorize = authorize
+export function downloadList (listID, filter) {
+  const token = getToken()
+  const URL = `${BASE_URL}list/${listID}/download?token=${token}`
+
+  // We first make sure the request is valid, before triggering the download.
+  fetch(URL, {
+    mode: 'cors',
+    method: 'HEAD'
+  })
+  .then(checkStatus)
+  .then((response) => {
+    window.location.replace(URL)
+  })
+}
