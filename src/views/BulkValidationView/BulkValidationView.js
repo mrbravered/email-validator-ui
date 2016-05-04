@@ -14,10 +14,18 @@ export class BulkValidation extends React.Component {
     super(props)
     this.handleSubmit = this.handleSubmit.bind(this)
     this.openUploadDialog = this.openUploadDialog.bind(this)
+    this.handleFileSelect = this.handleFileSelect.bind(this)
+    this.state = {
+      filename: ''
+    }
   }
 
   openUploadDialog () {
     this.refs.fileInput.click()
+  }
+
+  handleFileSelect (e) {
+    this.setState({filename: e.target.files[0].name})
   }
 
   handleSubmit (e) {
@@ -42,6 +50,7 @@ export class BulkValidation extends React.Component {
 
   render () {
     const { uploading, error, uploadProgress } = this.props
+    const { filename } = this.state
     return (
       <div className='container'>
         <div className='row'>
@@ -49,10 +58,20 @@ export class BulkValidation extends React.Component {
             <h1>Bulk email validation</h1>
             <form onSubmit={this.handleSubmit}>
               <div className='form-group'>
-                <button type='button' className='btn btn-default' disabled={uploading} onClick={this.openUploadDialog}>
-                  <i className='fa fa-upload'></i> Upload list of e-mail addresses
-                </button>
-                <input type='file' style={{display: 'none'}} ref='fileInput' />
+                <div className='input-group'>
+                  <input type='text' className='form-control' disabled='true' value={filename} />
+                  <span className='input-group-btn'>
+                    <button
+                      type='button'
+                      className='btn btn-default'
+                      disabled={uploading}
+                      onClick={this.openUploadDialog}
+                    >
+                      <i className='fa fa-upload'></i> Upload list of e-mail addresses
+                    </button>
+                  </span>
+                </div>
+                <input type='file' style={{display: 'none'}} ref='fileInput' onChange={this.handleFileSelect} />
               </div>
               <div className='form-group'>
                 <textarea
