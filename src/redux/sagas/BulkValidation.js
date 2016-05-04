@@ -41,8 +41,6 @@ function * validate (action) {
       const event = yield take(channel)
       switch (event.type) {
         case 'progress':
-          console.log('Progress')
-          console.log(event.payload)
           yield put({
             type: UPDATE_UPLOAD_PROGRESS,
             progress: {
@@ -52,12 +50,10 @@ function * validate (action) {
           })
           break
         case 'success':
-          console.log('Success!')
           yield put({type: UPLOAD_SUCEEDED})
           yield put(push('/app/lists'))
           break
         case 'error':
-          console.log('Error?')
           yield put({type: UPLOAD_FAILED, error: event.payload.message})
       }
     }
