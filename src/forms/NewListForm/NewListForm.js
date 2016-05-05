@@ -6,7 +6,6 @@ export const fields = ['name', 'file', 'textarea']
 
 const validate = (values) => {
   const errors = {}
-  console.log(values)
 
   const isTextareaFilled = values.textarea && values.textarea !== ''
   const isFileInputFilled = values.file && values.length !== 0

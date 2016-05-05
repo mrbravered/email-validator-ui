@@ -63,8 +63,6 @@ export function validateBulk (emailAddresses, name, onProgress, onSuccess, onErr
     data.name = name
   }
 
-  console.log(`Sending ${data}`)
-
   xhr.send(JSON.stringify(data))
 
   return () => xhr.abort()

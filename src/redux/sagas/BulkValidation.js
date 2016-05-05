@@ -50,8 +50,8 @@ function * validate (action) {
           })
           break
         case 'success':
-          yield put({type: duck.UPLOAD_SUCEEDED})
-          yield put(push('/app/lists'))
+          yield put({type: duck.UPLOAD_SUCEEDED, data: event.payload})
+          yield put(push(`/app/lists/${event.payload.id}`))
           break
         case 'error':
           yield put({type: duck.UPLOAD_FAILED, error: event.payload.message})
