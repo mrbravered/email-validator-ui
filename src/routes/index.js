@@ -4,7 +4,7 @@ import CoreLayout from 'layouts/CoreLayout/CoreLayout'
 
 import LoginView from 'views/LoginView'
 import SingleValidationView from 'views/SingleValidationView'
-import BulkValidationView from 'views/BulkValidationView'
+import NewListView from 'views/NewListView'
 import ListsView from 'views/ListsView'
 import ListView from 'views/ListView'
 
@@ -31,7 +31,7 @@ export default (store) => {
       <IndexRedirect to='lists' />
       <Route path='login' component={LoginView} />
       <Route path='single-email-validation' component={SingleValidationView} onEnter={isAuthenticated(store)} />
-      <Route path='lists/new' component={BulkValidationView} onEnter={isAuthenticated(store)} />
+      <Route path='lists/new' component={NewListView} onEnter={isAuthenticated(store)} />
       <Route path='lists' component={ListsView} onEnter={onListsEnter(store)} />
       <Route path='lists/:id' component={ListView} onEnter={onListsEnter(store)} />
 
