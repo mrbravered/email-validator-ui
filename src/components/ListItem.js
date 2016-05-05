@@ -38,7 +38,7 @@ class ListItem extends React.Component {
       <div className='panel panel-default'>
         <div className='panel-body' style={styles.panelBody}>
           <div style={styles.left}>
-            <Link to={`/app/lists/${list.id}`}><h3>{list.id}</h3></Link>
+            <Link to={`/app/lists/${list.id}`}><h3>{list.name || list.id}</h3></Link>
             <div style={styles.metadata}>
               <div>{list.report.total} email addresses</div>
               <div>Quality score: <strong>{list.report.qualityScore}</strong></div>

@@ -17,7 +17,7 @@ export class ResultsContainer extends React.Component {
     if (list) {
       return (
         <div>
-          <HeaderWithRightSpinner title={id} loading={isFetching} />
+          <HeaderWithRightSpinner title={list.name || list.id} loading={isFetching} />
           <ResultStats report={list.report} />
           <ResultsDownloadContainer id={list.id} />
         </div>
