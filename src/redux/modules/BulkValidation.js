@@ -6,8 +6,12 @@ export const VALIDATE_REQUESTED = 'bulk-validation/VALIDATE_REQUESTED'
 export const UPDATE_UPLOAD_PROGRESS = 'bulk-validation/UPDATE_UPLOAD_PROGRESS'
 
 // Action Creators
-export function validate (emailsArray) {
-  return {type: VALIDATE_REQUESTED, emailAddresses: emailsArray}
+export function validate (emailAddresses, name) {
+  return {
+    type: VALIDATE_REQUESTED,
+    emailAddresses,
+    name
+  }
 }
 
 // Reducer

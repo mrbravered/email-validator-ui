@@ -36,7 +36,7 @@ export function validateEmail (email) {
   .then(parseJSON)
 }
 
-export function validateBulk (emails, onProgress, onSuccess, onError) {
+export function validateBulk (emailAddresses, name, onProgress, onSuccess, onError) {
   const token = getToken()
   const xhr = new XMLHttpRequest()
   xhr.open('POST', BASE_URL + 'list', true)
@@ -56,7 +56,16 @@ export function validateBulk (emails, onProgress, onSuccess, onError) {
 
   xhr.onerror = (e) => onError
 
-  xhr.send(JSON.stringify({emailAddresses: emails}))
+  const data = {
+    emailAddresses
+  }
+  if (name) {
+    data.name = name
+  }
+
+  console.log(`Sending ${data}`)
+
+  xhr.send(JSON.stringify(data))
 
   return () => xhr.abort()
 }

@@ -1,10 +1,10 @@
 import { takeEvery, eventChannel, END } from 'redux-saga'
 import { take, call, put } from 'redux-saga/effects'
-import { UPLOADING_LIST, UPLOAD_FAILED, UPLOAD_SUCEEDED, VALIDATE_REQUESTED, UPDATE_UPLOAD_PROGRESS } from '../modules/BulkValidation'
+import * as duck from '../modules/BulkValidation'
 import { validateBulk } from 'Api'
 import { push } from 'react-router-redux'
 
-function createBulkValidationChannel (emailAddresses) {
+function createBulkValidationChannel (emailAddresses, name) {
   return eventChannel((listener) => {
     function onProgress (e) {
       listener({
@@ -29,20 +29,20 @@ function createBulkValidationChannel (emailAddresses) {
       listener(END)
     }
 
-    return validateBulk(emailAddresses, onProgress, onSuccess, onError)
+    return validateBulk(emailAddresses, name, onProgress, onSuccess, onError)
   })
 }
 
 function * validate (action) {
-  yield put({type: UPLOADING_LIST})
-  const channel = yield call(createBulkValidationChannel, action.emailAddresses)
+  yield put({type: duck.UPLOADING_LIST})
+  const channel = yield call(createBulkValidationChannel, action.emailAddresses, action.name)
   try {
     while (true) {
       const event = yield take(channel)
       switch (event.type) {
         case 'progress':
           yield put({
-            type: UPDATE_UPLOAD_PROGRESS,
+            type: duck.UPDATE_UPLOAD_PROGRESS,
             progress: {
               loaded: event.payload.loaded,
               total: event.payload.total
@@ -50,16 +50,16 @@ function * validate (action) {
           })
           break
         case 'success':
-          yield put({type: UPLOAD_SUCEEDED})
+          yield put({type: duck.UPLOAD_SUCEEDED})
           yield put(push('/app/lists'))
           break
         case 'error':
-          yield put({type: UPLOAD_FAILED, error: event.payload.message})
+          yield put({type: duck.UPLOAD_FAILED, error: event.payload.message})
       }
     }
   } finally {}
 }
 
 export function * watchBulkValidate () {
-  yield * takeEvery(VALIDATE_REQUESTED, validate)
+  yield * takeEvery(duck.VALIDATE_REQUESTED, validate)
 }
