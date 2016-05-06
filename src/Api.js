@@ -125,7 +125,14 @@ export function authorize (token) {
 
 export function downloadList (listID, filter) {
   const token = getToken()
-  const URL = `${BASE_URL}list/${listID}/download?token=${token}`
+  let URL = `${BASE_URL}list/${listID}/download?token=${token}`
+
+  if (filter && filter !== 'ALL') {
+    const filterMap = {
+      'VALID': 'valid'
+    }
+    URL = URL + '&status=' + filterMap[filter]
+  }
 
   // We first make sure the request is valid, before triggering the download.
   fetch(URL, {
