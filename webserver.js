@@ -1,12 +1,11 @@
 var express = require('express');
 var app = express();
 
-app.use(express.static('dist'));
-
+app.use('/app', express.static('dist'));
 // If the requested resource didn't match anything in the dist directory,
 // we return index.html anyways, so the client-side router can handle
 // the URL.
-app.get('*', function(req, res) {
+app.get('/app/*', function(req, res) {
   res.sendFile(__dirname + '/dist/index.html')
 })
 
