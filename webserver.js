@@ -1,6 +1,7 @@
 var express = require('express');
 var app = express();
 
+app.use(express.static(require('./conf.json')['site_dir']));
 app.use('/app', express.static('dist'));
 // If the requested resource didn't match anything in the dist directory,
 // we return index.html anyways, so the client-side router can handle
