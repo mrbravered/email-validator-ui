@@ -21,7 +21,9 @@ const Navbar = ({auth, onLogoutClick}) => {
             <span className='icon-bar'></span>
             <span className='icon-bar'></span>
           </button>
-          <a className='navbar-brand' href='#'>ListQuality</a>
+          <a className='navbar-brand' href='#'>
+            <img src='/app/favicon.png' height='20' style={{display: 'inline', marginRight: '12px'}} />ListQuality
+          </a>
         </div>
 
         <div className='collapse navbar-collapse' id='bs-example-navbar-collapse-1'>
