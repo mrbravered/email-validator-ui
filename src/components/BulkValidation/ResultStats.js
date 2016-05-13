@@ -22,8 +22,8 @@ const ResultStats = ({ report }) => {
         <div className='progress-bar progress-bar-success' style={{width: validWidth + '%'}}></div>
         <div className='progress-bar progress-bar-info' style={{width: unknownWidth + '%'}}></div>
         <div className='progress-bar progress-bar-warning' style={{width: spamTrapWidth + '%'}}></div>
-        <div className='progress-bar progress-bar-success' style={{width: roleBasedWidth + '%'}}></div>
-        <div className='progress-bar progress-bar-success' style={{width: acceptAllWidth + '%'}}></div>
+        <div className='progress-bar progress-bar-warning' style={{width: roleBasedWidth + '%'}}></div>
+        <div className='progress-bar progress-bar-warning' style={{width: acceptAllWidth + '%'}}></div>
         <div className='progress-bar progress-bar-danger' style={{width: invalidWidth + '%'}}></div>
       </div>
     </div>
