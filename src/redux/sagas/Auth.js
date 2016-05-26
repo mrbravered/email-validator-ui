@@ -1,7 +1,7 @@
 import { put, take, select, call } from 'redux-saga/effects'
 import { push } from 'react-router-redux'
 import * as duck from '../modules/Auth'
-import { authorize } from 'Api'
+import { login } from 'Api'
 
 const getIsLoggedIn = (state) => state.auth.isLoggedIn
 
@@ -9,15 +9,17 @@ function * loginFlow () {
   while (true) {
     let isLoggedIn = yield select(getIsLoggedIn)
     while (!isLoggedIn) {
-      const { token } = yield take(duck.LOGIN_REQUESTED)
-      const validToken = yield call(authorize, token)
-      if (validToken) {
-        localStorage.setItem('APIKey', token)
+      const action = yield take(duck.LOGIN_REQUESTED)
+      try {
+        const { APIKey } = yield call(login, action.email, action.password)
+        localStorage.setItem('APIKey', APIKey)
+        action.resolve()
         isLoggedIn = true
-        yield put({type: duck.LOGIN_SUCEEDED})
+        yield put({type: duck.LOGIN_SUCEEDED, APIKey})
         yield put(push('/app/lists'))
-      } else {
-        yield put({type: duck.LOGIN_FAILED})
+      } catch (e) {
+        action.reject({_error: e.message})
+        yield put({type: duck.LOGIN_FAILED, error: e})
       }
     }
     yield take(duck.LOGOUT)

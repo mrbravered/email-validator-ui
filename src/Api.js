@@ -107,22 +107,6 @@ export function getListPosts (listID, onProgress) {
   })
 }
 
-export function authorize (token) {
-  return fetch(BASE_URL + 'lists/summary', {
-    mode: 'cors',
-    headers: {
-      'Authorization': `Bearer ${token}`
-    }
-  })
-  .then((response) => {
-    if (response.status === 401) {
-      return false
-    } else {
-      return true
-    }
-  })
-}
-
 export function downloadList (listID, filter) {
   const token = getToken()
   let URL = `${BASE_URL}list/${listID}/download?token=${token}`
@@ -142,5 +126,30 @@ export function downloadList (listID, filter) {
   .then(checkStatus)
   .then((response) => {
     window.location.replace(URL)
+  })
+}
+
+export function login (email, password) {
+  return fetch(BASE_URL + 'user/login', {
+    mode: 'cors',
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({email, password})
+  })
+  .then((response) => {
+    if (response.status >= 200 && response.status < 300) {
+      // Login succeded
+      return response.json()
+    } else if (response.status >= 400 && response.status < 500) {
+      // Login failed
+      return response.json().then(({ message }) => {
+        throw new Error(message)
+      })
+    } else {
+      // Something happened
+      throw new Error(response.statusText)
+    }
   })
 }

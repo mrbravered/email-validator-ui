@@ -5,10 +5,13 @@ export const LOGIN_SUCEEDED = 'auth/LOGIN_SUCEEDED'
 export const LOGOUT = 'auth/LOGOUT'
 
 // Action Creators
-export function login (token) {
+export function login (email, password, resolve, reject) {
   return {
     type: LOGIN_REQUESTED,
-    token: token
+    email,
+    password,
+    resolve,
+    reject
   }
 }
 
@@ -20,7 +23,8 @@ export function logout () {
 export const initialState = {
   isLoggedIn: Boolean(localStorage.getItem('APIKey')),
   loginFailed: false,
-  isFetching: false
+  isFetching: false,
+  APIKey: ''
 }
 export default function (state = initialState, action) {
   switch (action.type) {
@@ -35,7 +39,8 @@ export default function (state = initialState, action) {
         ...state,
         isLoggedIn: true,
         loginFailed: false,
-        isFetching: false
+        isFetching: false,
+        APIKey: action.APIKey
       }
     case LOGIN_FAILED:
       return {
@@ -48,7 +53,8 @@ export default function (state = initialState, action) {
       return {
         ...state,
         isLoggedIn: false,
-        loginFailed: false
+        loginFailed: false,
+        APIKey: ''
       }
     default:
       return state

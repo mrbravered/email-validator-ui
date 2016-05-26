@@ -9,6 +9,7 @@ import ListsView from 'views/ListsView'
 import ListView from 'views/ListView'
 
 import { fetchLists } from 'redux/modules/Lists'
+import { logout } from 'redux/modules/Auth'
 
 const isAuthenticated = (store) => {
   return (nextState, replace) => {
@@ -25,11 +26,17 @@ const onListsEnter = (store) => {
   }
 }
 
+const onLoginEnter = (store) => {
+  return (nextState, replace) => {
+    store.dispatch(logout())
+  }
+}
+
 export default (store) => {
   return (
     <Route path='/app' component={CoreLayout}>
       <IndexRedirect to='lists' />
-      <Route path='login' component={LoginView} />
+      <Route path='login' component={LoginView} onEnter={onLoginEnter(store)} />
       <Route path='single-email-validation' component={SingleValidationView} onEnter={isAuthenticated(store)} />
       <Route path='lists/new' component={NewListView} onEnter={isAuthenticated(store)} />
       <Route path='lists' component={ListsView} onEnter={onListsEnter(store)} />
