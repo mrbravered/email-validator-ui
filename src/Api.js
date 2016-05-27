@@ -153,3 +153,28 @@ export function login (email, password) {
     }
   })
 }
+
+export function register (email, password) {
+  return fetch(BASE_URL + 'user/register', {
+    mode: 'cors',
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({email, password})
+  })
+  .then((response) => {
+    if (response.status >= 200 && response.status < 300) {
+      // Register succeded
+      return response.json()
+    } else if (response.status >= 400 && response.status < 500) {
+      // Register failed
+      return response.json().then(({ message }) => {
+        throw new Error(message)
+      })
+    } else {
+      // Something happened
+      throw new Error(response.statusText)
+    }
+  })
+}

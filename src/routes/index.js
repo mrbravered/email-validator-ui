@@ -3,11 +3,12 @@ import { Route, IndexRedirect, Redirect } from 'react-router'
 import CoreLayout from 'layouts/CoreLayout/CoreLayout'
 
 import LoginView from 'views/LoginView'
+import RegisterView from 'views/RegisterView'
+import APIKeyView from 'views/APIKeyView'
 import SingleValidationView from 'views/SingleValidationView'
 import NewListView from 'views/NewListView'
 import ListsView from 'views/ListsView'
 import ListView from 'views/ListView'
-import APIKeyView from 'views/APIKeyView'
 
 import { fetchLists } from 'redux/modules/Lists'
 import { logout } from 'redux/modules/Auth'
@@ -38,6 +39,7 @@ export default (store) => {
     <Route path='/app' component={CoreLayout}>
       <IndexRedirect to='lists' />
       <Route path='login' component={LoginView} onEnter={onLoginEnter(store)} />
+      <Route path='register' component={RegisterView} onEnter={onLoginEnter(store)} />
       <Route path='single-email-validation' component={SingleValidationView} onEnter={isAuthenticated(store)} />
       <Route path='lists/new' component={NewListView} onEnter={isAuthenticated(store)} />
       <Route path='lists' component={ListsView} onEnter={onListsEnter(store)} />
