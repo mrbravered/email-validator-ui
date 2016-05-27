@@ -24,7 +24,8 @@ export const initialState = {
   isLoggedIn: Boolean(localStorage.getItem('APIKey')),
   loginFailed: false,
   isFetching: false,
-  APIKey: ''
+  APIKey: localStorage.getItem('APIKey'),
+  email: localStorage.getItem('email')
 }
 export default function (state = initialState, action) {
   switch (action.type) {
@@ -40,7 +41,8 @@ export default function (state = initialState, action) {
         isLoggedIn: true,
         loginFailed: false,
         isFetching: false,
-        APIKey: action.APIKey
+        APIKey: action.APIKey,
+        email: action.email
       }
     case LOGIN_FAILED:
       return {
@@ -54,7 +56,8 @@ export default function (state = initialState, action) {
         ...state,
         isLoggedIn: false,
         loginFailed: false,
-        APIKey: ''
+        APIKey: '',
+        email: ''
       }
     default:
       return state

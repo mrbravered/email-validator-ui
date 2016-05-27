@@ -13,9 +13,10 @@ function * loginFlow () {
       try {
         const { APIKey } = yield call(login, action.email, action.password)
         localStorage.setItem('APIKey', APIKey)
+        localStorage.setItem('email', action.email)
         action.resolve()
         isLoggedIn = true
-        yield put({type: duck.LOGIN_SUCEEDED, APIKey})
+        yield put({type: duck.LOGIN_SUCEEDED, APIKey, email: action.email})
         yield put(push('/app/lists'))
       } catch (e) {
         action.reject({_error: e.message})
@@ -24,6 +25,7 @@ function * loginFlow () {
     }
     yield take(duck.LOGOUT)
     localStorage.removeItem('APIKey')
+    localStorage.removeItem('email')
     yield put(push('/app/login'))
   }
 }

@@ -7,6 +7,7 @@ import SingleValidationView from 'views/SingleValidationView'
 import NewListView from 'views/NewListView'
 import ListsView from 'views/ListsView'
 import ListView from 'views/ListView'
+import APIKeyView from 'views/APIKeyView'
 
 import { fetchLists } from 'redux/modules/Lists'
 import { logout } from 'redux/modules/Auth'
@@ -41,6 +42,7 @@ export default (store) => {
       <Route path='lists/new' component={NewListView} onEnter={isAuthenticated(store)} />
       <Route path='lists' component={ListsView} onEnter={onListsEnter(store)} />
       <Route path='lists/:id' component={ListView} onEnter={onListsEnter(store)} />
+      <Route path='APIKey' component={APIKeyView} onEnter={isAuthenticated(store)} />
 
       <Redirect from='/' to='/app' />
     </Route>
