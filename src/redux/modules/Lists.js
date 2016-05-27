@@ -1,4 +1,5 @@
 import orderBy from 'lodash/orderBy'
+import { LOGOUT } from 'redux/modules/auth'
 
 // Constants
 export const FETCH_LISTS = 'lists/FETCH_LISTS'
@@ -51,6 +52,8 @@ export default function (state = initialState, action) {
         isFetching: false,
         error: action.error
       }
+    case LOGOUT:
+      return initialState
     default: return state
   }
 }
