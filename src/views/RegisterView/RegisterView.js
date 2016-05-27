@@ -1,8 +1,7 @@
 import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { login } from 'redux/modules/Auth'
+import { register } from 'redux/modules/Auth'
 import RegisterForm from 'forms/RegisterForm'
-import { register } from 'Api'
 
 export class RegisterView extends React.Component {
 
@@ -38,12 +37,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     onSubmit: (values) => {
-      return register(values.email, values.password)
-      .then(() => {
-        dispatch(login(values.email, values.password, () => {}, () => {}))
-      })
-      .catch((e) => {
-        return Promise.reject({_error: e.message})
+      return new Promise((resolve, reject) => {
+        dispatch(register(values.email, values.password, resolve, reject))
       })
     }
   }

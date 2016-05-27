@@ -4,6 +4,8 @@ export const LOGIN_FAILED = 'auth/LOGIN_FAILED'
 export const LOGIN_SUCEEDED = 'auth/LOGIN_SUCEEDED'
 export const LOGOUT = 'auth/LOGOUT'
 
+export const REGISTER_REQUESTED = 'auth/REGISTER_REQUESTED'
+
 // Action Creators
 export function login (email, password, resolve, reject) {
   return {
@@ -17,6 +19,16 @@ export function login (email, password, resolve, reject) {
 
 export function logout () {
   return {type: LOGOUT}
+}
+
+export function register (email, password, resolve, reject) {
+  return {
+    type: REGISTER_REQUESTED,
+    email,
+    password,
+    resolve,
+    reject
+  }
 }
 
 // Reducer
