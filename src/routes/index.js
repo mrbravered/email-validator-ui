@@ -39,7 +39,7 @@ export default (store) => {
     <Route path='/app' component={CoreLayout}>
       <IndexRedirect to='lists' />
       <Route path='login' component={LoginView} onEnter={onLoginEnter(store)} />
-      <Route path='register' component={RegisterView} onEnter={onLoginEnter(store)} />
+      <Route path='signup' component={RegisterView} onEnter={onLoginEnter(store)} />
       <Route path='single-email-validation' component={SingleValidationView} onEnter={isAuthenticated(store)} />
       <Route path='lists/new' component={NewListView} onEnter={isAuthenticated(store)} />
       <Route path='lists' component={ListsView} onEnter={onListsEnter(store)} />
