@@ -1,5 +1,6 @@
 import Koa from 'koa'
 import convert from 'koa-convert'
+import mount from 'koa-mount'
 import webpack from 'webpack'
 import webpackConfig from '../build/webpack.config'
 import historyApiFallback from 'koa-connect-history-api-fallback'
@@ -23,7 +24,8 @@ if (config.proxy && config.proxy.enabled) {
 // (ignoring file requests). If you want to implement isomorphic
 // rendering, you'll want to remove this middleware.
 app.use(convert(historyApiFallback({
-  verbose: false
+  verbose: false,
+  index: '/app/index.html'
 })))
 
 // ------------------------------------
@@ -42,7 +44,7 @@ if (config.env === 'development') {
   // these files. This middleware doesn't need to be enabled outside
   // of development since this directory will be copied into ~/dist
   // when the application is compiled.
-  app.use(convert(serve(paths.client('static'))))
+  app.use(convert(mount('/app', serve(paths.client('static')))))
 } else {
   debug(
     'Server is being run outside of live development mode. This starter kit ' +
