@@ -1,5 +1,5 @@
 import orderBy from 'lodash/orderBy'
-import { LOGOUT } from 'redux/modules/auth'
+import { LOGOUT } from 'redux/modules/Auth'
 
 // Constants
 export const FETCH_LISTS = 'lists/FETCH_LISTS'
