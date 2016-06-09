@@ -37,12 +37,12 @@ const mapDispatchToProps = (dispatch) => {
     onSubmit: (data) => {
       // The emailAddresses sent is a merge between
       // the values in the file and the textarea
-      const addresses = []
+      let addresses = []
       if (data.file) {
-        addresses.concat(data.file)
+        addresses = addresses.concat(data.file)
       }
       if (data.textarea) {
-        addresses.concat(data.textarea.split('\n'))
+        addresses = addresses.concat(data.textarea.split('\n'))
       }
       dispatch(validate(addresses, data.name))
     }
