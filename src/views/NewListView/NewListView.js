@@ -1,9 +1,6 @@
 import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
-import unique from 'lodash/uniq'
-import compact from 'lodash/compact'
 import { validate } from 'redux/modules/BulkValidation'
-import readList from 'utils/listReader'
 import NewListForm from 'forms/NewListForm'
 
 export class BulkValidation extends React.Component {
@@ -40,17 +37,14 @@ const mapDispatchToProps = (dispatch) => {
     onSubmit: (data) => {
       // The emailAddresses sent is a merge between
       // the values in the file and the textarea
-      let fileValue = ''
-      if (data.file && data.file.length > 0) {
-        fileValue = readList(data.file[0])
+      const addresses = []
+      if (data.file) {
+        addresses.concat(data.file)
       }
-
-      Promise.all([data.textarea, fileValue]).then((values) => {
-        const text = values.join('\n')
-        const trimmed = text.trim()
-        const emailsArray = compact(unique(trimmed.split('\n')))
-        dispatch(validate(emailsArray, data.name))
-      })
+      if (data.textarea) {
+        addresses.concat(data.textarea.split('\n'))
+      }
+      dispatch(validate(addresses, data.name))
     }
   }
 }

@@ -28,7 +28,6 @@ export class APIKeyView extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-  console.log(state.auth.APIKey)
   return {
     APIKey: state.auth.APIKey
   }

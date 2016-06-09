@@ -1,11 +1,16 @@
 import React, { PropTypes } from 'react'
 import { reduxForm } from 'redux-form'
 import ProgressBar from 'components/ProgressBar'
+import FileSelectionInput from 'components/FileSelectionInput'
 
 export const fields = ['name', 'file', 'textarea']
 
 const validate = (values) => {
   const errors = {}
+
+  if (values.file && values.file.length === 0) {
+    errors.file = 'The selected file doesn\'t appear to have any email address.'
+  }
 
   const isTextareaFilled = values.textarea && values.textarea !== ''
   const isFileInputFilled = values.file && values.length !== 0
@@ -13,16 +18,7 @@ const validate = (values) => {
   if (!isTextareaFilled && !isFileInputFilled) {
     errors._error = 'You have to select a file or paste the list.'
   }
-
   return errors
-}
-
-const getName = (field) => {
-  try {
-    return field.value[0].name
-  } catch (e) {
-    return ''
-  }
 }
 
 export class NewList extends React.Component {
@@ -38,19 +34,11 @@ export class NewList extends React.Component {
 
   constructor (props) {
     super(props)
-    this.openUploadDialog = this.openUploadDialog.bind(this)
-    this.onFileChange = this.onFileChange.bind(this)
+    this.onTextareaChange = this.onTextareaChange.bind(this)
   }
 
-  openUploadDialog () {
-    this.refs.fileInput.click()
-  }
-
-  onFileChange (e) {
-    if (this.props.fields.name.value === '' || !this.props.fields.name.touched) {
-      this.props.fields.name.onChange(e.target.files[0].name)
-    }
-    this.props.fields.file.onChange(e)
+  onTextareaChange (e) {
+    this.props.fields.textarea.onChange(e.target.value.split('\n'))
   }
 
   render () {
@@ -73,30 +61,11 @@ export class NewList extends React.Component {
           <div className='col-md-6'>
             <div className='form-group'>
               <label>Upload a file</label>
-              <div className='input-group'>
-                <input type='text' className='form-control' disabled='true' value={getName(fields.file)} />
-                <span className='input-group-btn'>
-                  <button
-                    type='button'
-                    className='btn btn-default'
-                    disabled={uploading}
-                    onClick={this.openUploadDialog}
-                  >
-                    <i className='fa fa-upload'></i> Select file
-                  </button>
-                </span>
+              <div className='help-text' style={{marginBottom: '1em'}}>
+                You can upload .csv, .xls or .xlsx files.
               </div>
-              <div className='help-text' style={{marginTop: '1em'}}>
-              It should be a text file with one email address per line.
-              </div>
-              <input
-                type='file'
-                style={{display: 'none'}}
-                ref='fileInput'
-                {...fields.file}
-                onChange={this.onFileChange}
-                value={null}
-              />
+              <FileSelectionInput {...fields.file} uploading={uploading} />
+              {fields.file.error && <div className='text-danger'>{fields.file.error}</div>}
             </div>
           </div>
 
@@ -108,7 +77,6 @@ export class NewList extends React.Component {
                 rows={4}
                 className='form-control'
                 {...fields.textarea}
-                style={{}}
               ></textarea>
             </div>
           </div>
