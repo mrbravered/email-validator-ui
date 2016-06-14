@@ -26,7 +26,7 @@ export class ResultsContainer extends React.Component {
       return (
         <div>
           <HeaderWithRightSpinner title={id} loading={isFetching} />
-          {isFetching ? <div>Cargando</div> : <div>Not found</div>}
+          {isFetching ? <div>Loading</div> : <div>Not found</div>}
         </div>
       )
     }
