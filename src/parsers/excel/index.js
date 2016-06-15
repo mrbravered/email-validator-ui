@@ -1,87 +1,115 @@
 import React, { PropTypes } from 'react'
+import { connect } from 'react-redux'
+import * as duck from 'redux/modules/ExcelFileSelector'
+import isEqual from 'lodash/isEqual'
 
-const createAdditionalInfo = (wb) => {
+export const createExcelAdditionalInfo = (file) => {
   class AdditionalInfo extends React.Component {
 
     static propTypes = {
-      onChange: PropTypes.func
+      onChange: PropTypes.func, // From FileSelectionInput
+      readExcelFile: PropTypes.func, // From mapDispatchToProps
+      selectSheet: PropTypes.func, // From mapDispatchToProps
+      selectColumn: PropTypes.func, // From mapDispatchToProps
+      reset: PropTypes.func, // From mapDispatchToProps
+      state: PropTypes.object, // From mapStateToProps
+      selected: PropTypes.bool // From mapStateToProps
     }
 
     constructor (props) {
       super(props)
-
-      this.state = {
-        wb: wb,
-        sheet: wb.SheetNames.length === 1 ? wb.SheetNames[0] : null,
-        error: null,
-        selected: false,
-        column: ''
-      }
-      this.onSelect = this.onSelect.bind(this)
+      props.readExcelFile(file)
+      this.onSheetSelect = this.onSheetSelect.bind(this)
+      this.onColumnSelect = this.onColumnSelect.bind(this)
     }
 
-    onSelect () {
-      const sheetName = this.refs.sheetSelect.value
-      const col = this.refs.colInput.value
+    componentWillMount () {
+      this.props.untouch()
+    }
 
-      const worksheet = wb.Sheets[sheetName]
-      const list = []
-      for (let cell in worksheet) {
-        if (cell[0] === col) {
-          let value = worksheet[cell].v
-          if (value.indexOf('@') !== -1) {
-            list.push(value)
-          }
-        }
-      }
-      if (list.length > 0) {
-        this.setState({error: null, column: col, selected: true})
-        this.props.onChange(list)
-      } else {
-        this.setState({error: 'The selected sheet and column doesn\'t appear to have any email addresses.'})
+    onSheetSelect (e) {
+      this.props.selectSheet(e.target.value)
+    }
+
+    onColumnSelect (e) {
+      this.props.selectColumn(e.target.value)
+    }
+
+    componentWillUnmount () {
+      this.props.reset()
+      this.props.onChange([])
+      this.props.untouch()
+    }
+
+    componentWillReceiveProps (nextProps) {
+      // Pretty important. This is the interface to the outside world
+      if (nextProps.state.list.length > 0 && !isEqual(this.props.state.list, nextProps.state.list)) {
+        this.props.onChange(nextProps.state.list)
       }
     }
 
     render () {
-      let content
-      if (!this.state.selected) {
-        content = (
-          <div style={{marginTop: '1em'}}>
-            <div className='help-text'>
-              Select the sheet and column containing the email addresses.
-            </div>
-            <div className='form-group'>
-              <select defaultValue={wb.SheetNames[0]} ref='sheetSelect' className='form-control'>
-                {wb.SheetNames.map((sheet) => <option value={sheet} key={sheet}>{sheet}</option>)}
-              </select>
-            </div>
-            <div className='form-group'>
-              <input type='text' className='form-control' placeholder='Column' ref='colInput' />
-            </div>
-            {this.state.error ? <div className='text-danger'>{this.state.error}</div> : ''}
-            <div className='form-group'>
-              <button type='button' className='btn btn-default' onClick={this.onSelect}>Select</button>
-            </div>
+      const { state, selected } = this.props
+
+      if (state.loading) {
+        return (
+          <div style={{marginTop: '1em', marginBottom: '1px'}}>
+            <i className='fa fa-circle-o-notch fa-spin' aria-hidden='true'></i> Loading
           </div>
         )
-      } else {
-        content = <div style={{marginTop: '1em'}}>Selected sheet {this.state.sheet} and column {this.state.column}</div>
       }
-      return content
+
+      let sheetSelect
+      if (state.sheetNames.length > 0) {
+        sheetSelect = (
+          <div className='form-group'>
+            <select defaultValue={state.sheet} className='form-control' onChange={this.onSheetSelect}>
+              {state.sheetNames.map((sheet) => <option value={sheet} key={sheet}>{sheet}</option>)}
+            </select>
+          </div>
+        )
+      }
+
+      let columnSelect
+      if (state.columns.length > 0) {
+        columnSelect = (
+          <div className='form-group'>
+            <select defaultValue={state.column} className='form-control' onChange={this.onColumnSelect}>
+              {state.columns.map((column) => <option value={column} key={column}>{column}</option>)}
+            </select>
+          </div>
+        )
+      }
+
+      return (
+        <div style={{marginTop: '1em'}}>
+          <div className='help-text'>
+            Select the sheet and column containing the email addresses.
+          </div>
+          {sheetSelect}
+          {columnSelect}
+          {state.error ? <div className='text-danger'>{state.error}</div> : ''}
+        </div>
+      )
+
     }
   }
-  return AdditionalInfo
-}
-
-export const parse = (file) => new Promise((resolve, reject) => {
-  const reader = new FileReader()
-  reader.onload = (e) => {
-    const workbook = XLSX.read(e.target.result, {type: 'binary'})
-    resolve({
-      ready: false,
-      list: null,
-      AdditionalInfoComponent: createAdditionalInfo(workbook)
-    })
+  const mapStateToProps = (state) => {
+    return {
+      state: state.excelFileSelector,
+      selected: !!(state.excelFileSelector.sheet && state.excelFileSelector.column)
+    }
   }
-  reader.readAsBinaryString(file)
-})
+  const mapDispatchToProps = (dispatch) => {
+    return {
+      reset: () => dispatch(duck.reset()),
+      readExcelFile: (file) => dispatch(duck.readExcelFile(file)),
+      selectSheet: (sheet) => dispatch(duck.selectSheet(sheet)),
+      selectColumn: (sheet, column) => dispatch(duck.selectColumn(sheet, column))
+    }
+  }
+  return connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(AdditionalInfo)
+}

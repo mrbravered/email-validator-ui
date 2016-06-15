@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react'
 import * as csvParser from 'parsers/csv'
-import * as excelParser from 'parsers/excel'
+import { createExcelAdditionalInfo } from 'parsers/excel'
 
 const getFilenameExtension = (name) => name.split('.').pop()
 const div = () => <div></div>
@@ -41,20 +41,10 @@ class FileSelectionInput extends React.Component {
 
       if (ext === 'csv' || ext === 'txt') {
         csvParser.parse(file).then((results) => {
-          if (results.ready) {
-            this.props.onChange(results.list)
-          } else {
-            this.setState({AdditionalInfo: results.AdditionalInfoComponent})
-          }
+          this.props.onChange(results)
         })
       } else if (ext === 'xls' || ext === 'xlsx') {
-        excelParser.parse(file).then((results) => {
-          if (results.ready) {
-            this.props.onChange(results.list)
-          } else {
-            this.setState({AdditionalInfo: results.AdditionalInfoComponent})
-          }
-        })
+        this.setState({AdditionalInfo: createExcelAdditionalInfo(file)})
       }
     }
   }
@@ -85,7 +75,7 @@ class FileSelectionInput extends React.Component {
           </span>
 
         </div>
-        <this.state.AdditionalInfo onChange={this.props.onChange} />
+        <this.state.AdditionalInfo onChange={this.props.onChange} untouch={this.props.untouch}/>
       </div>
     )
   }

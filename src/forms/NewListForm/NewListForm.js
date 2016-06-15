@@ -8,15 +8,11 @@ export const fields = ['name', 'file', 'textarea']
 const validate = (values) => {
   const errors = {}
 
-  if (values.file && values.file.length === 0) {
-    errors.file = 'The selected file doesn\'t appear to have any email address.'
-  }
-
   const isTextareaFilled = values.textarea && values.textarea !== ''
-  const isFileInputFilled = values.file && values.length !== 0
+  const isFileInputFilled = values.file && values.file.length > 0
 
   if (!isTextareaFilled && !isFileInputFilled) {
-    errors._error = 'You have to select a file or paste the list.'
+    errors._error = 'You have to either select a valid file or paste the list.'
   }
   return errors
 }
@@ -64,7 +60,7 @@ export class NewList extends React.Component {
               <div className='help-text' style={{marginBottom: '1em'}}>
                 You can upload .csv, .xls or .xlsx files.
               </div>
-              <FileSelectionInput {...fields.file} uploading={uploading} />
+              <FileSelectionInput {...fields.file} uploading={uploading} untouch={() => this.props.untouch(['file'])}/>
               {fields.file.error && <div className='text-danger'>{fields.file.error}</div>}
             </div>
           </div>

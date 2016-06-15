@@ -5,6 +5,7 @@ import singleValidation from './modules/SingleValidation'
 import bulkValidation from './modules/BulkValidation'
 import auth from './modules/Auth'
 import lists from './modules/Lists'
+import excelFileSelector from './modules/ExcelFileSelector'
 
 export default combineReducers({
   router,
@@ -12,5 +13,6 @@ export default combineReducers({
   singleValidation,
   bulkValidation,
   auth,
-  lists
+  lists,
+  excelFileSelector
 })
