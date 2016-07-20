@@ -1,0 +1,26 @@
+.StatsTable {
+  width: 100%;
+  table-layout: auto;
+
+  td {
+    padding: 1em;
+  }
+
+  tr:not(.negligible) {
+    font-weight: 700;
+  }
+
+  tr.negligible {
+    color: #bbb;
+    font-weight: 300;
+  }
+
+  td.absorbing {
+    width: 100%;
+  }
+
+  td.fitting {
+    white-space: nowrap;
+    text-align: right;
+  }
+}
