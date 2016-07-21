@@ -1,0 +1,39 @@
+.wrapper {
+  display: flex;
+  flex-flow: row wrap;
+}
+
+.wrapper > * {
+  flex: 1 100%;
+}
+
+.piechart, .downloadbuttons {
+  display: flex;
+}
+
+.piechartInner, .downloadbuttonsInner {
+  margin: auto auto;
+}
+
+@media (min-width: 600px) {
+  .reference {
+    flex: 5 10px;
+  }
+  .piechart {
+    flex: 3 10px;
+  }
+}
+
+@media (min-width: 992px) {
+  .reference {
+    flex: 4 10px;
+  }
+
+  .piechart {
+    flex: 3 10px;
+  }
+
+  .downloadbuttons {
+    flex: 2 10px;
+  }
+}

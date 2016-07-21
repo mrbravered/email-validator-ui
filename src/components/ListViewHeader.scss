@@ -1,0 +1,33 @@
+.pageHeader {
+  display: flex;
+  align-items: 'center';
+}
+
+.title {
+  flex: 1;
+  font-weight: 500;
+}
+
+.icon {
+  margin-right: '1em';
+}
+
+.slash {
+  font-weight: 300;
+}
+
+.backLink {
+  font-weight: 300;
+}
+
+.backLink:hover {
+  text-decoration: none;
+}
+
+.subheader {
+  
+}
+
+.wrapper {
+  border-bottom: 1px solid #eee;
+}

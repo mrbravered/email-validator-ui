@@ -11,9 +11,9 @@ export class ResultsDownload extends React.Component {
 
   render () {
     return (
-      <div style={{display: 'inline-block', margin: '1em auto'}}>
-        <DownloadButton value='Download all results' onClick={this.props.handleAllResultsDownload} />
-        <DownloadButton value='Download valid addresses' onClick={this.props.handleValidEmailsDownload} />
+      <div style={{display: 'block', margin: '1em auto'}}>
+        <DownloadButton value='All results' onClick={this.props.handleAllResultsDownload} />
+        <DownloadButton value='Valid addresses' onClick={this.props.handleValidEmailsDownload} />
       </div>
     )
   }
