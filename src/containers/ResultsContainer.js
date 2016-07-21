@@ -58,7 +58,7 @@ export class ResultsContainer extends React.Component {
       }))
       return (
         <div>
-          <ListViewHeader title={list.name || list.id} loading={isFetching} />
+          <ListViewHeader list={list} loading={isFetching} />
           <div className={styles.wrapper}>
             <div className={styles.reference}>
               <ResultStatsReference items={reportItems} />
@@ -79,7 +79,7 @@ export class ResultsContainer extends React.Component {
     } else {
       return (
         <div>
-          <ListViewHeader title={id} loading={isFetching} total={list ? list.report.total : 0} />
+          <ListViewHeader list={list} loading={isFetching} />
           {isFetching ? <div>Loading</div> : <div>Not found</div>}
         </div>
       )

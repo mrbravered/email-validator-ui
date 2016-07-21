@@ -7,14 +7,13 @@ class ListViewHeader extends React.Component {
 
   static propTypes = {
     loading: PropTypes.bool,
-    title: PropTypes.string,
-    children: PropTypes.element,
-    total: PropTypes.number
+    list: PropTypes.object
   }
 
   render () {
-    const {loading, title, children, total} = this.props
-
+    const {loading, list} = this.props
+    const title = list ? list.name || list.id : ''
+    const total = list ? list.report.total : ''
     return (
       <div className={styles.wrapper}>
         <div className={cn(styles.pageHeader)} >
@@ -28,10 +27,9 @@ class ListViewHeader extends React.Component {
             style={{display: loading ? 'block' : 'none'}}
             aria-hidden='true'
           ></i>
-          {children}
         </div>
         <div className={styles.subheader}>
-          Records Verified: <strong>{total}</strong>
+          Records Verified: <span className={styles.total}>{total}</span>
         </div>
       </div>
     )

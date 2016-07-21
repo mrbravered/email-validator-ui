@@ -1,3 +1,9 @@
+.wrapper {
+  border-bottom: 1px solid #eee;
+  margin-bottom: 1em;
+  padding-bottom: 1em;
+}
+
 .pageHeader {
   display: flex;
   align-items: 'center';
@@ -25,9 +31,9 @@
 }
 
 .subheader {
-  
+  font-size: 1.2em;
 }
 
-.wrapper {
-  border-bottom: 1px solid #eee;
+.total {
+  font-weight: 500;
 }
