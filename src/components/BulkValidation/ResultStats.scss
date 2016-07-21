@@ -1,13 +1,14 @@
 .StatsTable {
   width: 100%;
   table-layout: auto;
+  font-size: 1.2em;
 
   td {
-    padding: 1em;
+    padding: 0.6em;
   }
 
   tr:not(.negligible) {
-    font-weight: 700;
+    font-weight: 500;
   }
 
   tr.negligible {

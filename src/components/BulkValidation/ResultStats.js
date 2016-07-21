@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react'
 import styles from './ResultStats.scss'
+import PieChart from './PieChart'
 
 class ResultStats extends React.Component {
   static propTypes = {
@@ -89,26 +90,17 @@ class ResultStats extends React.Component {
 
   render () {
     const { report } = this.props
-
-    const validWidth = report.valid / report.total * 100
-    const invalidWidth = report.invalid / report.total * 100
-    const unknownWidth = report.unknown / report.total * 100
-    const spamTrapWidth = report.spamtrap / report.total * 100
-    const roleBasedWidth = report['role-based'] / report.total * 100
-    const acceptAllWidth = report['accept all'] / report.total * 100
-
+    const data = this.values.map((v) => ({
+      value: v.count,
+      color: v.color
+    })).filter((v) => v.value > 0)
     return (
       <div>
         <div>
           {this.statsTable}
         </div>
-        <div className='progress'>
-          <div className='progress-bar progress-bar-success' style={{width: validWidth + '%'}}></div>
-          <div className='progress-bar progress-bar-info' style={{width: unknownWidth + '%'}}></div>
-          <div className='progress-bar progress-bar-warning' style={{width: spamTrapWidth + '%'}}></div>
-          <div className='progress-bar progress-bar-warning' style={{width: roleBasedWidth + '%'}}></div>
-          <div className='progress-bar progress-bar-warning' style={{width: acceptAllWidth + '%'}}></div>
-          <div className='progress-bar progress-bar-danger' style={{width: invalidWidth + '%'}}></div>
+        <div>
+          <PieChart width={200} height={200} radius={100} data={data} />
         </div>
       </div>
     )
