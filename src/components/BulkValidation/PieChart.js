@@ -25,10 +25,7 @@ class PieSlice extends React.Component {
 
   render () {
     const { r, points, color, largeArc } = this.props
-    console.log("Points: ")
-    console.log(points)
     const d = `M ${r} ${r} L ${points[0].x} ${points[0].y} A ${r} ${r} 0 ${largeArc} 1 ${points[1].x} ${points[1].y} Z`
-    console.log(d)
     return <path fill={color} stroke='white' strokeWidth={2} d={d} />
   }
 }
@@ -47,9 +44,7 @@ class PieChart extends React.Component {
     const { size, data } = this.props
     const radius = 100
     let slices
-    console.log(data)
     const total = data.map((v) => v.value).reduce((a, b) => a + b, 0)
-    console.log(total)
 
     // Calculate decimals and add to slices
     slices = data.map((slice) => ({
@@ -81,8 +76,6 @@ class PieChart extends React.Component {
         pointForAngle(radius, array[i].accumulatedAngle)
       ]
     }))
-
-    console.log(slices)
 
     return (
       <svg width={size} height={size} viewBox='0 0 200 200' preserveAspectRatio='none'>
