@@ -1,5 +1,5 @@
 import { connect } from 'react-redux'
-import ResultsDownload from 'components/BulkValidation/ResultsDownload'
+import ResultsDownload from 'components/ResultsDownload'
 import { downloadList } from 'redux/modules/Lists'
 
 const mapStateToProps = (state) => {

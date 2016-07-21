@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 
 import ResultsDownloadContainer from 'containers/ResultsDownloadContainer'
 import ListViewHeader from 'components/ListViewHeader'
-import ResultStatsReference from 'components/BulkValidation/ResultStatsReference'
+import ResultStatsReference from 'components/ResultStatsReference'
 import ResultStatsPieChart from 'components/ResultStatsPieChart'
 
 import styles from './ResultsContainer.scss'
