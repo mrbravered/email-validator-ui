@@ -100,7 +100,7 @@ class ResultStats extends React.Component {
           {this.statsTable}
         </div>
         <div>
-          <PieChart width={200} height={200} radius={100} data={data} />
+          <PieChart size='200' data={data} />
         </div>
       </div>
     )

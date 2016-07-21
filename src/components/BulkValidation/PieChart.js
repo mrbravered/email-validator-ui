@@ -16,6 +16,7 @@ class PieSlice extends React.Component {
   static propTypes = {
     r: PropTypes.number,
     color: PropTypes.string,
+    largeArc: PropTypes.number,
     points: PropTypes.arrayOf(PropTypes.shape({
       x: PropTypes.number,
       y: PropTypes.number
@@ -35,9 +36,7 @@ class PieSlice extends React.Component {
 class PieChart extends React.Component {
 
   static propTypes = {
-    width: PropTypes.number,
-    height: PropTypes.number,
-    radius: PropTypes.number,
+    size: PropTypes.number,
     data: PropTypes.arrayOf(PropTypes.shape({
       value: PropTypes.number,
       color: PropTypes.string
@@ -45,7 +44,8 @@ class PieChart extends React.Component {
   }
 
   render () {
-    const { width, height, radius, data } = this.props
+    const { size, data } = this.props
+    const radius = 100
     let slices
     console.log(data)
     const total = data.map((v) => v.value).reduce((a, b) => a + b, 0)
@@ -85,7 +85,7 @@ class PieChart extends React.Component {
     console.log(slices)
 
     return (
-      <svg width={width} height={height}>
+      <svg width={size} height={size} viewBox='0 0 200 200' preserveAspectRatio='none'>
         {slices.map((slice, i) => <PieSlice key={i} r={radius} color={slice.color} points={slice.points} largeArc={slice.angle > PI ? 1 : 0} />)}
         <circle cx={radius} cy={radius} r={radius * 0.65} fill='white' />
         <text
