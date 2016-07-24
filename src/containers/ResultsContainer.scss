@@ -11,8 +11,17 @@
   display: flex;
 }
 
-.piechartInner, .downloadbuttonsInner {
+.piechartInner {
   margin: auto auto;
+}
+
+.downloadbuttonsInner {
+  width: 100%;
+  height: auto;
+
+  @media (min-width: 992px) {
+    display: flex;
+  }
 }
 
 @media (min-width: 600px) {

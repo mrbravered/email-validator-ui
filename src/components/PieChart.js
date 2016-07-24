@@ -45,8 +45,6 @@ class PieChart extends React.Component {
     const radius = 100
     const total = data.map((v) => v.value).reduce((a, b) => a + b, 0)
 
-    console.log(data)
-
     let pie
     if (data.length === 1) {
       pie = <circle cx={radius} cy={radius} r={radius} fill={data[0].color} />

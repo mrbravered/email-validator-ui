@@ -1,6 +1,8 @@
 import React, { PropTypes } from 'react'
 import DownloadButton from 'components/DownloadButton'
 
+import styles from './ResultsDownload.scss'
+
 export class ResultsDownload extends React.Component {
 
   static propTypes = {
@@ -11,9 +13,17 @@ export class ResultsDownload extends React.Component {
 
   render () {
     return (
-      <div style={{display: 'block', margin: '1em auto'}}>
-        <DownloadButton value='All results' onClick={this.props.handleAllResultsDownload} />
-        <DownloadButton value='Valid addresses' onClick={this.props.handleValidEmailsDownload} />
+      <div className={styles.buttonsWrapper}>
+        <DownloadButton
+          value='All results'
+          className={styles.downloadButton}
+          onClick={this.props.handleAllResultsDownload}
+        />
+        <DownloadButton
+          value='Valid addresses'
+          className={styles.downloadButton}
+          onClick={this.props.handleValidEmailsDownload}
+        />
       </div>
     )
   }

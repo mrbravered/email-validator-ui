@@ -43,7 +43,7 @@ export class ResultsContainer extends React.Component {
   }
 
   render () {
-    const {list, isFetching, id} = this.props
+    const {list, isFetching} = this.props
 
     if (list) {
       // Put report in order
