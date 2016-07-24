@@ -43,43 +43,61 @@ class PieChart extends React.Component {
   render () {
     const { size, data } = this.props
     const radius = 100
-    let slices
     const total = data.map((v) => v.value).reduce((a, b) => a + b, 0)
 
-    // Calculate decimals and add to slices
-    slices = data.map((slice) => ({
-      ...slice,
-      dec: slice.value / total
-    }))
+    console.log(data)
 
-    // Calculate angles and add to slices
-    slices = slices.map((slice) => ({
-      ...slice,
-      angle: slice.dec * 2 * PI
-    }))
+    let pie
+    if (data.length === 1) {
+      pie = <circle cx={radius} cy={radius} r={radius} fill={data[0].color} />
+    } else {
+      let slices
 
-    // Calculate accumulated angles and add to slices
-    let accumulated = 0
-    slices = slices.map((slice) => {
-      accumulated += slice.angle
-      return {
+      // Calculate decimals and add to slices
+      slices = data.map((slice) => ({
         ...slice,
-        accumulatedAngle: accumulated
-      }
-    })
+        dec: slice.value / total
+      }))
 
-    // Calculate start and end points and add to slices
-    slices = slices.map((slice, i, array) => ({
-      ...slice,
-      points: [
-        i === 0 ? {x: radius, y: 0} : pointForAngle(radius, array[i - 1].accumulatedAngle),
-        pointForAngle(radius, array[i].accumulatedAngle)
-      ]
-    }))
+      // Calculate angles and add to slices
+      slices = slices.map((slice) => ({
+        ...slice,
+        angle: slice.dec * 2 * PI
+      }))
+
+      // Calculate accumulated angles and add to slices
+      let accumulated = 0
+      slices = slices.map((slice) => {
+        accumulated += slice.angle
+        return {
+          ...slice,
+          accumulatedAngle: accumulated
+        }
+      })
+
+      // Calculate start and end points and add to slices
+      slices = slices.map((slice, i, array) => ({
+        ...slice,
+        points: [
+          i === 0 ? {x: radius, y: 0} : pointForAngle(radius, array[i - 1].accumulatedAngle),
+          pointForAngle(radius, array[i].accumulatedAngle)
+        ]
+      }))
+
+      pie = slices.map((slice, i) => (
+        <PieSlice
+          key={i}
+          r={radius}
+          color={slice.color}
+          points={slice.points}
+          largeArc={slice.angle > PI ? 1 : 0}
+        />
+      ))
+    }
 
     return (
       <svg width={size} height={size} viewBox='0 0 200 200' preserveAspectRatio='none'>
-        {slices.map((slice, i) => <PieSlice key={i} r={radius} color={slice.color} points={slice.points} largeArc={slice.angle > PI ? 1 : 0} />)}
+        {pie}
         <circle cx={radius} cy={radius} r={radius * 0.65} fill='white' />
         <text
           textAnchor='middle'

@@ -7,10 +7,10 @@ class ResultStats extends React.Component {
   }
 
   render () {
-    const data = this.props.items.map((v) => ({
+    const data = this.props.items.filter((v) => !v.negligible).map((v) => ({
       value: v.count,
       color: v.color
-    })).filter((v) => v.value > 0)
+    }))
     return (
       <PieChart size={200} data={data} />
     )
