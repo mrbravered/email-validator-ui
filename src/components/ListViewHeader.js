@@ -13,7 +13,7 @@ class ListViewHeader extends React.Component {
   render () {
     const {loading, list} = this.props
     const title = list ? list.name || list.id : ''
-    const total = list ? list.report.total : ''
+    const total = list && list.status === 'processed' ? list.report.total : '-'
     return (
       <div className={styles.wrapper}>
         <div className={cn(styles.pageHeader)} >

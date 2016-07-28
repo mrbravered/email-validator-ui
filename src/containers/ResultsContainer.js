@@ -5,6 +5,7 @@ import ResultsDownloadContainer from 'containers/ResultsDownloadContainer'
 import ListViewHeader from 'components/ListViewHeader'
 import ResultStatsReference from 'components/ResultStatsReference'
 import ResultStatsPieChart from 'components/ResultStatsPieChart'
+import FullPageMessage from 'components/FullPageMessage'
 
 import styles from './ResultsContainer.scss'
 
@@ -45,20 +46,22 @@ export class ResultsContainer extends React.Component {
   render () {
     const {list, isFetching} = this.props
 
+    let content
     if (list) {
-      // Put report in order
-      const report = list.report
-      const reportItems = Object.keys(reportKeys).map((key) => ({
-        key,
-        title: reportKeys[key].title,
-        count: report[key],
-        percent: (report[key] / report.total * 100),
-        negligible: (report[key] / report.total * 100) < 1,
-        color: reportKeys[key].color
-      }))
-      return (
-        <div>
-          <ListViewHeader list={list} loading={isFetching} />
+
+      if (list.status === 'processed') {
+        // Put report in order
+        const report = list.report
+        const reportItems = Object.keys(reportKeys).map((key) => ({
+          key,
+          title: reportKeys[key].title,
+          count: report[key],
+          percent: (report[key] / report.total * 100),
+          negligible: (report[key] / report.total * 100) < 1,
+          color: reportKeys[key].color
+        }))
+
+        content = (
           <div className={styles.wrapper}>
             <div className={styles.reference}>
               <ResultStatsReference items={reportItems} />
@@ -74,16 +77,23 @@ export class ResultsContainer extends React.Component {
               </div>
             </div>
           </div>
-        </div>
-      )
+        )
+      } else {
+        content = <FullPageMessage message='Processing list' />
+      }
     } else {
-      return (
-        <div>
-          <ListViewHeader list={list} loading={isFetching} />
-          {isFetching ? <div>Loading</div> : <div>Not found</div>}
-        </div>
-      )
+      if (isFetching) {
+        content = <FullPageMessage message='Loading list' />
+      } else {
+        content = <FullPageMessage message='List not found' />
+      }
     }
+    return (
+      <div>
+        <ListViewHeader list={list} loading={isFetching} />
+        {content}
+      </div>
+    )
   }
 }
 
