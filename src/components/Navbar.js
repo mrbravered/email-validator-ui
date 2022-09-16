@@ -60,11 +60,11 @@ const TopNavbar = ({auth, onLogoutClick}) => {
             </Link>
           </div>
         </div>
-
-        <button className={styles.navbarToggler} type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-          <IoMdMenu height="2em" width="2em"/>
-        </button>
-
+        <div className='navbar-right' style={{height: '60px', display: 'flex', alignItems: 'center'}}>
+          <button className={styles.navbarToggler} type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <IoMdMenu size={28} />
+          </button>
+        </div>
         <div className='navbar-collapse collapse' id="navbarSupportedContent">
           <ul className='nav navbar-nav navbar-right'>
             <li><Link className={styles.navbarItem} to={'/app/add-verified-emails'}>Add Verified Emails</Link></li>
