@@ -52,6 +52,7 @@ const TopNavbar = ({auth, onLogoutClick}) => {
 
         <Navbar.Collapse>
           <ul className='nav navbar-nav navbar-right'>
+            <li><Link style={navItemStyle} to={'/app/add-verified-emails'}>Add Verified Emails</Link></li>
             <li><Link style={navItemStyle} to={'/app/single-email-validation'}>Single Email Validation</Link></li>
             <li><Link style={navItemStyle} to={'/app/lists'}>Bulk Email Validation</Link></li>
             {auth.isLoggedIn
