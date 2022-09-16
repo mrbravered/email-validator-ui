@@ -3,7 +3,7 @@ import 'whatwg-fetch'
 const INVALID_APIKEY_MESSAGE = 'Invalid APIKey. Logout and login again with a valid API Key.'
 const BASE_URL = 'http://127.0.0.1:3000/api/'
 
-function checkStatus (response) {
+function checkStatus(response) {
   if (response.status >= 200 && response.status < 300) {
     return response
   } else {
@@ -18,25 +18,25 @@ function checkStatus (response) {
   }
 }
 
-function parseJSON (response) {
+function parseJSON(response) {
   return response.json()
 }
 
 const getToken = () => localStorage.getItem('APIKey')
 
-export function validateEmail (email) {
+export function validateEmail(email) {
   const token = getToken()
   return fetch(BASE_URL + `post?emailAddress=${email}`, {
-    mode: 'cors',
-    headers: {
-      'Authorization': `Bearer ${token}`
-    }
-  })
-  .then(checkStatus)
-  .then(parseJSON)
+      mode: 'cors',
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    })
+    .then(checkStatus)
+    .then(parseJSON)
 }
 
-export function validateBulk (emailAddresses, name, onProgress, onSuccess, onError) {
+export function validateBulk(emailAddresses, name, onProgress, onSuccess, onError) {
   const token = getToken()
   const xhr = new XMLHttpRequest()
   xhr.open('POST', BASE_URL + 'list', true)
@@ -68,19 +68,48 @@ export function validateBulk (emailAddresses, name, onProgress, onSuccess, onErr
   return () => xhr.abort()
 }
 
-export function getLists () {
+export function emailUpload(emailAddresses, onProgress, onSuccess, onError) {
   const token = getToken()
-  return fetch(BASE_URL + 'lists/summary', {
-    mode: 'cors',
-    headers: {
-      'Authorization': `Bearer ${token}`
+  const xhr = new XMLHttpRequest()
+  xhr.open('POST', BASE_URL + 'posts', true)
+  xhr.responseType = 'json'
+  xhr.setRequestHeader('Authorization', `Bearer ${token}`)
+  xhr.setRequestHeader('Content-Type', 'application/json')
+
+  xhr.onload = (e) => {
+    if (xhr.status >= 200 && xhr.status < 300) {
+      onSuccess(xhr.response)
+    } else {
+      onError(new Error(xhr.statusText))
     }
-  })
-  .then(checkStatus)
-  .then(parseJSON)
+  }
+
+  xhr.upload.onprogress = onProgress
+
+  xhr.onerror = (e) => onError
+
+  const data = {
+    posts: emailAddresses
+  }
+
+  xhr.send(JSON.stringify(data))
+
+  return () => xhr.abort()
 }
 
-export function getListPosts (listID, onProgress) {
+export function getLists() {
+  const token = getToken()
+  return fetch(BASE_URL + 'lists/summary', {
+      mode: 'cors',
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    })
+    .then(checkStatus)
+    .then(parseJSON)
+}
+
+export function getListPosts(listID, onProgress) {
   const token = getToken()
 
   return new Promise((resolve, reject) => {
@@ -107,7 +136,7 @@ export function getListPosts (listID, onProgress) {
   })
 }
 
-export function downloadList (listID, filter) {
+export function downloadList(listID, filter) {
   const token = getToken()
   let URL = `${BASE_URL}list/${listID}/download?token=${token}`
 
@@ -120,61 +149,71 @@ export function downloadList (listID, filter) {
 
   // We first make sure the request is valid, before triggering the download.
   fetch(URL, {
-    mode: 'cors',
-    method: 'HEAD'
-  })
-  .then(checkStatus)
-  .then((response) => {
-    window.location.replace(URL)
-  })
+      mode: 'cors',
+      method: 'HEAD'
+    })
+    .then(checkStatus)
+    .then((response) => {
+      window.location.replace(URL)
+    })
 }
 
-export function login (email, password) {
+export function login(email, password) {
   return fetch(BASE_URL + 'user/login', {
-    mode: 'cors',
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({email, password})
-  })
-  .then((response) => {
-    if (response.status >= 200 && response.status < 300) {
-      // Login succeded
-      return response.json()
-    } else if (response.status >= 400 && response.status < 500) {
-      // Login failed
-      return response.json().then(({ message }) => {
-        throw new Error(message)
+      mode: 'cors',
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        email,
+        password
       })
-    } else {
-      // Something happened
-      throw new Error(response.statusText)
-    }
-  })
+    })
+    .then((response) => {
+      if (response.status >= 200 && response.status < 300) {
+        // Login succeded
+        return response.json()
+      } else if (response.status >= 400 && response.status < 500) {
+        // Login failed
+        return response.json().then(({
+          message
+        }) => {
+          throw new Error(message)
+        })
+      } else {
+        // Something happened
+        throw new Error(response.statusText)
+      }
+    })
 }
 
-export function register (email, password) {
+export function register(email, password) {
   return fetch(BASE_URL + 'user/register', {
-    mode: 'cors',
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({email, password})
-  })
-  .then((response) => {
-    if (response.status >= 200 && response.status < 300) {
-      // Register succeded
-      return response.json()
-    } else if (response.status >= 400 && response.status < 500) {
-      // Register failed
-      return response.json().then(({ message }) => {
-        throw new Error(message)
+      mode: 'cors',
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        email,
+        password
       })
-    } else {
-      // Something happened
-      throw new Error(response.statusText)
-    }
-  })
+    })
+    .then((response) => {
+      if (response.status >= 200 && response.status < 300) {
+        // Register succeded
+        return response.json()
+      } else if (response.status >= 400 && response.status < 500) {
+        // Register failed
+        return response.json().then(({
+          message
+        }) => {
+          throw new Error(message)
+        })
+      } else {
+        // Something happened
+        throw new Error(response.statusText)
+      }
+    })
 }

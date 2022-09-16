@@ -3,6 +3,7 @@ import { watchValidate } from './SingleValidation'
 import { watchBulkValidate } from './BulkValidation'
 import listsSaga from './Lists'
 import authSaga from './Auth'
+import { watchEmailUpload } from './EmailUpload'
 import excelFileSelector from './ExcelFileSelector'
 
 export default function * () {
@@ -10,5 +11,6 @@ export default function * () {
   yield spawn(watchBulkValidate)
   yield spawn(listsSaga)
   yield spawn(authSaga)
+  yield spawn(watchEmailUpload)
   yield spawn(excelFileSelector)
 }

@@ -5,6 +5,7 @@ import singleValidation from './modules/SingleValidation'
 import bulkValidation from './modules/BulkValidation'
 import auth from './modules/Auth'
 import lists from './modules/Lists'
+import EmailUpload from './modules/EmailUpload'
 import excelFileSelector from './modules/ExcelFileSelector'
 
 export default combineReducers({
@@ -14,5 +15,6 @@ export default combineReducers({
   bulkValidation,
   auth,
   lists,
-  excelFileSelector
+  EmailUpload,
+  excelFileSelector,
 })
