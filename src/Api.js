@@ -1,7 +1,6 @@
 import 'whatwg-fetch'
 
 const INVALID_APIKEY_MESSAGE = 'Invalid APIKey. Logout and login again with a valid API Key.'
-
 const BASE_URL = 'http://listquality.com:3000/api/'
 
 function checkStatus(response) {
