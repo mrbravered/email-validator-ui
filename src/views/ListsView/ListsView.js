@@ -1,6 +1,7 @@
-import React, { PropTypes } from 'react'
+import React from 'react'
+import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { LinkContainer } from 'react-router-bootstrap'
+import { Link } from 'react-router'
 import ListsContainer from 'containers/ListsContainer'
 import HeaderWithRightSpinner from 'components/HeaderWithRightSpinner'
 
@@ -18,11 +19,9 @@ export class Lists extends React.Component {
         <div className='row'>
           <div className='col-sm-12 col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3'>
             <HeaderWithRightSpinner title='Validation Lists' loading={isFetching}>
-              <LinkContainer to='/app/lists/new'>
-                <button className='btn btn-primary'>
-                  <i className='fa fa-plus'></i> New list
-                </button>
-              </LinkContainer>
+              <Link to='/app/lists/new' className='btn btn-primary'>
+                <i className='fa fa-plus'></i> New list
+              </Link>
             </HeaderWithRightSpinner>
             <ListsContainer />
           </div>

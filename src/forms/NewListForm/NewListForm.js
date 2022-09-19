@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react'
+import React from 'react'
+import PropTypes from 'prop-types'
 import { reduxForm } from 'redux-form'
 import ProgressBar from 'components/ProgressBar'
 import FileSelectionInput from 'components/FileSelectionInput'
@@ -46,7 +47,7 @@ export class NewList extends React.Component {
         <div className='row'>
           <div className='col-sm-12'>
             <div className='form-group'>
-              <label>List name</label>
+              <label htmlFor='name'>List name</label>
               <input type='text' className='form-control' {...fields.name} />
             </div>
           </div>

@@ -34,7 +34,6 @@ function createEmailUploadChannel (verifiedEmailData) {
 }
 
 function * uploading (action) {
-  console.log('wow')
   yield put({type: duck.UPLOADING_LIST})
   const channel = yield call(createEmailUploadChannel, action.verifiedEmailData)
   try {

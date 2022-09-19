@@ -1,13 +1,19 @@
-import React, { PropTypes } from 'react'
+import React from 'react'
+import PropTypes from 'prop-types'
 import { Link } from 'react-router'
-import Navbar from 'react-bootstrap/lib/Navbar'
+import classNames from 'classnames'
+import styles from './Navbar.scss'
+import { IoMdMenu } from "react-icons/io";
 
 const UserActionsDropdown = ({ email, onLogoutLinkClick }) => {
   return (
     <li className='dropdown'>
       <a
         href='#'
-        className='dropdown-toggle'
+        className={classNames(
+          'dropdown-toggle',
+          styles.navbarItem
+        )}
         data-toggle='dropdown'
         role='button'
         aria-haspopup='true'
@@ -30,7 +36,13 @@ UserActionsDropdown.propTypes = {
 
 const navItemStyle = {
   textTransform: 'capitalize',
-  fontSize: '13px'
+  fontSize: '13px',
+  color: 'rgb(137,148,135)'
+}
+
+const navbarStyle = {
+  backgroundColor: 'rgb(45,55,65)',
+  borderRadius: '0px',
 }
 
 const TopNavbar = ({auth, onLogoutClick}) => {
@@ -39,29 +51,32 @@ const TopNavbar = ({auth, onLogoutClick}) => {
     onLogoutClick()
   }
   return (
-    <Navbar default staticTop>
+    <nav className='navbar navbar-expand-lg navbar-light' style={navbarStyle}>
       <div className='container'>
-        <Navbar.Header>
-          <Navbar.Toggle />
-          <Navbar.Brand>
+        <div className='navbar-brand'>
+          <div>
             <Link to='/app/lists'>
               <img src='/app/favicon.png' height='20' style={{display: 'inline', marginRight: '12px'}} />ListQuality
             </Link>
-          </Navbar.Brand>
-        </Navbar.Header>
-
-        <Navbar.Collapse>
+          </div>
+        </div>
+        <div className='navbar-right' style={{height: '60px', display: 'flex', alignItems: 'center'}}>
+          <button className={styles.navbarToggler} type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <IoMdMenu size={28} />
+          </button>
+        </div>
+        <div className='navbar-collapse collapse' id="navbarSupportedContent">
           <ul className='nav navbar-nav navbar-right'>
-            <li><Link style={navItemStyle} to={'/app/add-verified-emails'}>Add Verified Emails</Link></li>
-            <li><Link style={navItemStyle} to={'/app/single-email-validation'}>Single Email Validation</Link></li>
-            <li><Link style={navItemStyle} to={'/app/lists'}>Bulk Email Validation</Link></li>
+            <li><Link className={styles.navbarItem} to={'/app/add-verified-emails'}>Add Verified Emails</Link></li>
+            <li><Link className={styles.navbarItem} to={'/app/lists'}>Bulk Email Validation</Link></li>
+            <li><Link className={styles.navbarItem} to={'/app/single-email-validation'}>Single Email Validation</Link></li>
             {auth.isLoggedIn
             ? <UserActionsDropdown email={auth.email} onLogoutLinkClick={onLogoutLinkClick} />
-            : <li><Link style={navItemStyle} to={'/app/login'}>Login</Link></li>}
+            : <li><Link className={styles.navbarItem} to={'/app/login'}>Login</Link></li>}
           </ul>
-        </Navbar.Collapse>
+        </div>
       </div>
-    </Navbar>
+    </nav>
   )
 }
 

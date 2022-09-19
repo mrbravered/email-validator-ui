@@ -1,6 +1,7 @@
-import React, { PropTypes } from 'react'
-import '../../styles/core.scss'
+import React from 'react'
+import PropTypes from 'prop-types'
 import Navbar from 'containers/Navbar'
+import '../../styles/core.scss'
 
 export class CoreLayout extends React.Component {
   static propTypes = {
