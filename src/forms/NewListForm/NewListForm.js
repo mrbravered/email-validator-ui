@@ -47,7 +47,7 @@ export class NewList extends React.Component {
         <div className='row'>
           <div className='col-sm-12'>
             <div className='form-group'>
-              <label>List name</label>
+              <label htmlFor='name'>List name</label>
               <input type='text' className='form-control' {...fields.name} />
             </div>
           </div>
