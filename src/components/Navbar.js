@@ -67,7 +67,7 @@ const TopNavbar = ({auth, onLogoutClick}) => {
         </div>
         <div className='navbar-collapse collapse' id="navbarSupportedContent">
           <ul className='nav navbar-nav navbar-right'>
-            <li><Link className={styles.navbarItem} to={'/app/add-verified-emails'}>Add Verified Emails</Link></li>
+            <li><Link className={styles.navbarItem} to={'/app/add-emails'}>Add Emails</Link></li>
             <li><Link className={styles.navbarItem} to={'/app/lists'}>Bulk Email Validation</Link></li>
             <li><Link className={styles.navbarItem} to={'/app/single-email-validation'}>Single Email Validation</Link></li>
             {auth.isLoggedIn

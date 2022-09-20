@@ -11,7 +11,7 @@ export class BulkValidation extends React.Component {
       <div className='container'>
         <div className='row'>
           <div className='col-sm-10 col-sm-offset-1 col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2'>
-            <h1>Add Verified Emails</h1>
+            <h1>Add Emails</h1>
 
             <EmailUploadForm {...this.props} />
 
@@ -42,23 +42,15 @@ const mapDispatchToProps = (dispatch) => {
       if (data.file) {
         addresses = addresses.concat(data.file)
         addresses = addresses.map((emailData)=>{
-          const currentData = emailData.split(',')
-          if(emailData.length === 3) {
-            return {
-              emailAddress: currentData[0],
-              status: currentData[1],
-              date: currentData[2],
-            }
-          }
+          const currentData = emailData.replace('\r', '').split(',')
           const now = new Date()
           return {
             'emailAddress': currentData[0],
-            'status': 'verified',
-            'date': now.toISOString() 
+            'status': currentData[1] ? currentData[1] : data.isValid? 'Valid' : 'Invalid',
+            'date': currentData[2] ? currentData[2] : now.toISOString()
           }
         })
         addresses.shift()
-        console.log(addresses)
       }
       dispatch(upload(addresses, data.name))
     }

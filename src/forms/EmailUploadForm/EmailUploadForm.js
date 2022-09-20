@@ -4,7 +4,7 @@ import { reduxForm } from 'redux-form'
 import ProgressBar from 'components/ProgressBar'
 import FileSelectionInput from 'components/FileSelectionInput'
 
-export const fields = ['file']
+export const fields = ['file', 'isValid']
 
 const validate = (values) => {
   const errors = {}
@@ -30,7 +30,7 @@ export class EmailUpload extends React.Component {
   }
 
   render () {
-    const { fields, handleSubmit, uploading, uploadProgress, error, submitFailed } = this.props
+    const { fields, handleSubmit, uploading, uploadProgress, error, submitFailed, values } = this.props
 
     return (
       <form onSubmit={handleSubmit}>
@@ -54,8 +54,11 @@ export class EmailUpload extends React.Component {
             {uploading ? <ProgressBar {...uploadProgress} /> : ''}
 
             {submitFailed && error ? <div className='text-danger'>{error}</div> : ''}
-
-            <div className='form-group'>
+            <div className="custom-control custom-checkbox">
+              <input className="custom-control-input" type="checkbox" id="customCheck1" {...fields.isValid} />
+              <label className="custom-control-label" htmlFor="customCheck1" style={{marginLeft: '10px'}}>{values.isValid ? "Mark Status As 'Invalid'" : "Mark Status As 'Valid'"}</label>
+            </div>
+            <div className='form-group' style={{marginTop: '15px'}}>
               <button
                 disabled={uploading}
                 type='submit'
