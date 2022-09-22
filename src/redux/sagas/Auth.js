@@ -5,11 +5,12 @@ import * as Api from 'Api'
 
 const getIsLoggedIn = (state) => state.auth.isLoggedIn
 
-function * handleLoginSuccess (action, APIKey) {
-  localStorage.setItem('APIKey', APIKey)
-  localStorage.setItem('email', action.email)
+function * handleLoginSuccess (action, user) {
+  localStorage.setItem('APIKey', user.APIKey)
+  localStorage.setItem('email', user.email)
+  localStorage.setItem('role', user.role)
   action.resolve()
-  yield put({type: duck.LOGIN_SUCEEDED, APIKey, email: action.email})
+  yield put({type: duck.LOGIN_SUCEEDED, user: user})
   yield put(push('/app/lists'))
 }
 
@@ -31,17 +32,17 @@ function * loginFlow () {
 
       if (loginRequest) {
         try {
-          const { APIKey } = yield call(Api.login, loginRequest.email, loginRequest.password)
+          const receivedUser = yield call(Api.login, loginRequest.email, loginRequest.password)
           isLoggedIn = true
-          yield * handleLoginSuccess(loginRequest, APIKey)
+          yield * handleLoginSuccess(loginRequest, receivedUser)
         } catch (e) {
           yield * handleLoginFail(loginRequest, e)
         }
       } else {
         try {
-          const { APIKey } = yield call(Api.register, registerRequest.email, registerRequest.password)
+          const receivedUser = yield call(Api.register, registerRequest.email, registerRequest.password)
           isLoggedIn = true
-          yield * handleLoginSuccess(registerRequest, APIKey)
+          yield * handleLoginSuccess(registerRequest, receivedUser)
         } catch (e) {
           yield * handleLoginFail(registerRequest, e)
         }

@@ -5,7 +5,7 @@ import CoreLayout from 'layouts/CoreLayout/CoreLayout'
 import LoginView from 'views/LoginView'
 import RegisterView from 'views/RegisterView'
 import APIKeyView from 'views/APIKeyView'
-import AddVerfiedEmail from 'views/AddVerifiedEmailView'
+import AddEmails from 'views/AddEmailsView'
 import SingleValidationView from 'views/SingleValidationView'
 import NewListView from 'views/NewListView'
 import ListsView from 'views/ListsView'
@@ -41,7 +41,7 @@ export default (store) => {
       <IndexRedirect to='lists' />
       <Route path='login' component={LoginView} onEnter={onLoginEnter(store)} />
       <Route path='signup' component={RegisterView} onEnter={onLoginEnter(store)} />
-      <Route path='add-verified-emails' component={AddVerfiedEmail} onEnter={isAuthenticated(store)} />
+      <Route path='add-emails' component={AddEmails} onEnter={isAuthenticated(store)} />
       <Route path='single-email-validation' component={SingleValidationView} onEnter={isAuthenticated(store)} />
       <Route path='lists/new' component={NewListView} onEnter={isAuthenticated(store)} />
       <Route path='lists' component={ListsView} onEnter={onListsEnter(store)} />

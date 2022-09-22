@@ -67,12 +67,19 @@ const TopNavbar = ({auth, onLogoutClick}) => {
         </div>
         <div className='navbar-collapse collapse' id="navbarSupportedContent">
           <ul className='nav navbar-nav navbar-right'>
-            <li><Link className={styles.navbarItem} to={'/app/add-verified-emails'}>Add Verified Emails</Link></li>
-            <li><Link className={styles.navbarItem} to={'/app/lists'}>Bulk Email Validation</Link></li>
-            <li><Link className={styles.navbarItem} to={'/app/single-email-validation'}>Single Email Validation</Link></li>
-            {auth.isLoggedIn
-            ? <UserActionsDropdown email={auth.email} onLogoutLinkClick={onLogoutLinkClick} />
-            : <li><Link className={styles.navbarItem} to={'/app/login'}>Login</Link></li>}
+          {auth.isLoggedIn ?
+            <React.Fragment>
+              { auth.role === 'Admin' &&
+                <li><Link className={styles.navbarItem} to={'/app/add-emails'}>Add Emails</Link></li>
+              }
+              <li><Link className={styles.navbarItem} to={'/app/lists'}>Bulk Email Validation</Link></li>
+              <li><Link className={styles.navbarItem} to={'/app/single-email-validation'}>Single Email Validation</Link></li>
+              <UserActionsDropdown email={auth.email} onLogoutLinkClick={onLogoutLinkClick} />
+            </React.Fragment> :
+            <React.Fragment>
+              <li><Link className={styles.navbarItem} to={'/app/login'}>Login</Link></li>
+              <li><Link className={styles.navbarItem} to={'/app/signup'}>Register</Link></li>
+            </React.Fragment>}
           </ul>
         </div>
       </div>

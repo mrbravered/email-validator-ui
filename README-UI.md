@@ -18,7 +18,7 @@ Great, now that introductions have been made here's everything in full detail:
 
 |`npm run...`|Description|
 |---|---|
-|`start`|Spins up Koa server to serve your app at `localhost:3000`. HMR will be enabled in development.|
+|`start`|Spins up Koa server to serve your app at `127.0.0.1:3000`. HMR will be enabled in development.|
 |`compile`|Compiles the application to disk (`~/dist` by default).|
 |`dev`|Same as `npm start`, but enables nodemon to automatically restart the server when server-related code is changed.|
 |`dev:nw`|Same as `npm run dev`, but opens the redux devtools in a new window.|
