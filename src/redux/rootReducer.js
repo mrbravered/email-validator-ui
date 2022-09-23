@@ -7,10 +7,12 @@ import auth from './modules/Auth'
 import lists from './modules/Lists'
 import EmailUpload from './modules/EmailUpload'
 import excelFileSelector from './modules/ExcelFileSelector'
+import user from './modules/User'
 
 export default combineReducers({
   router,
   form,
+  user,
   singleValidation,
   bulkValidation,
   auth,

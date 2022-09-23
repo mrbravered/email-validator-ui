@@ -2,8 +2,11 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
+import { getUserList } from 'redux/modules/User'
+import { fetchLists } from 'redux/modules/Lists'
 import ListsContainer from 'containers/ListsContainer'
 import HeaderWithRightSpinner from 'components/HeaderWithRightSpinner'
+import ListInfoPanel from '../../components/ListInfoPanel'
 
 export class Lists extends React.Component {
 
@@ -11,8 +14,19 @@ export class Lists extends React.Component {
     isFetching: PropTypes.bool
   }
 
+  componentDidMount() {
+    const { getUsers, getFetchedLists } = this.props
+    getFetchedLists()
+    getUsers()
+  }
+
+  handleUserSelectChange(id, dateFilterType) {
+    const { getFetchedLists } = this.props
+    getFetchedLists(id, dateFilterType)
+  }
+
   render () {
-    const { isFetching } = this.props
+    const { isFetching, listCount, users } = this.props
 
     return (
       <div className='container'>
@@ -23,6 +37,7 @@ export class Lists extends React.Component {
                 <i className='fa fa-plus'></i> New list
               </Link>
             </HeaderWithRightSpinner>
+            <ListInfoPanel listCount={listCount} users={users} handleUserSelectChange={(id, dateFilterType) => this.handleUserSelectChange(id, dateFilterType)}/>
             <ListsContainer />
           </div>
         </div>
@@ -33,11 +48,16 @@ export class Lists extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    isFetching: state.lists.isFetching
+    isFetching: state.lists.isFetching,
+    listCount: state.lists.listCount,
+    users: state.user.users
   }
 }
 const mapDispatchToProps = (dispatch) => {
-  return {}
+  return {
+    getUsers: ()=> dispatch(getUserList()),
+    getFetchedLists: (userId = '', dateFilterType = '') => dispatch(fetchLists(userId, dateFilterType)),
+  }
 }
 
 export default connect(

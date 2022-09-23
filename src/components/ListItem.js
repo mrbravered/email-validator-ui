@@ -2,6 +2,11 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { Link } from 'react-router'
 
+const formateDate = (date) => {
+  const formattedDate = new Date(date)
+  return formattedDate.toLocaleDateString()
+}
+
 class ListItem extends React.Component {
 
   static propTypes = {
@@ -32,7 +37,8 @@ class ListItem extends React.Component {
       },
       metadata: {
         display: 'flex',
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
+        fontSize: '11px'
       }
     }
     return (
@@ -41,7 +47,8 @@ class ListItem extends React.Component {
           <div style={styles.left}>
             <Link to={`/app/lists/${list.id}`}><h3>{list.name || list.id}</h3></Link>
             <div style={styles.metadata}>
-              <div>{list.report.total} email addresses</div>
+              <div><strong>{ list.report.total }</strong> email addresses</div>
+              <div>Processed Date: <strong> {formateDate(list.date)} </strong></div>
               <div>Quality score: <strong>{list.report.qualityScore}</strong></div>
             </div>
           </div>
