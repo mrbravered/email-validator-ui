@@ -98,9 +98,9 @@ export function emailUpload(emailAddresses, onProgress, onSuccess, onError) {
   return () => xhr.abort()
 }
 
-export function getLists() {
+export function getLists(userId, dateFilterType) {
   const token = getToken()
-  return fetch(BASE_URL + 'lists/summary', {
+  return fetch(BASE_URL + `lists/summary?user_id=${userId}&&date_filter_type=${dateFilterType}`, {
       mode: 'cors',
       headers: {
         'Authorization': `Bearer ${token}`
@@ -222,6 +222,18 @@ export function register(email, password) {
 export function getCurrentUser() {
   const token = getToken()
   return fetch(BASE_URL + 'auth/currentuser', {
+      mode: 'cors',
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    })
+    .then(parseJSON)
+}
+
+
+export function getUserList() {
+  const token = getToken()
+  return fetch(BASE_URL + 'users', {
       mode: 'cors',
       headers: {
         'Authorization': `Bearer ${token}`

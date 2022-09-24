@@ -5,7 +5,7 @@ import * as duck from '../modules/Lists'
 
 function * fetchLists (action) {
   try {
-    const lists = yield call(getLists)
+    const lists = yield call(getLists, action.userId, action.dateFilterType)
     yield put(duck.receiveLists(lists))
   } catch (error) {
     yield put({type: duck.LISTS_FETCH_FAILED, error: error.message})

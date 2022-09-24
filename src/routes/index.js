@@ -11,7 +11,6 @@ import NewListView from 'views/NewListView'
 import ListsView from 'views/ListsView'
 import ListView from 'views/ListView'
 
-import { fetchLists } from 'redux/modules/Lists'
 import { logout } from 'redux/modules/Auth'
 
 const isAuthenticated = (store) => {
@@ -19,13 +18,6 @@ const isAuthenticated = (store) => {
     if (!store.getState().auth.isLoggedIn) {
       replace({pathname: '/app/login'})
     }
-  }
-}
-
-const onListsEnter = (store) => {
-  return (nextState, replace) => {
-    store.dispatch(fetchLists())
-    isAuthenticated(store)(nextState, replace)
   }
 }
 
@@ -44,8 +36,8 @@ export default (store) => {
       <Route path='add-emails' component={AddEmails} onEnter={isAuthenticated(store)} />
       <Route path='single-email-validation' component={SingleValidationView} onEnter={isAuthenticated(store)} />
       <Route path='lists/new' component={NewListView} onEnter={isAuthenticated(store)} />
-      <Route path='lists' component={ListsView} onEnter={onListsEnter(store)} />
-      <Route path='lists/:id' component={ListView} onEnter={onListsEnter(store)} />
+      <Route path='lists' component={ListsView} onEnter={isAuthenticated(store)} />
+      <Route path='lists/:id' component={ListView} onEnter={isAuthenticated(store)} />
       <Route path='APIKey' component={APIKeyView} onEnter={isAuthenticated(store)} />
 
       <Redirect from='/' to='/app' />

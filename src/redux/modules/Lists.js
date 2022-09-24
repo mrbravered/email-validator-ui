@@ -15,8 +15,12 @@ export function receiveLists (lists) {
   }
 }
 
-export function fetchLists () {
-  return {type: FETCH_LISTS}
+export function fetchLists (userId, dateFilterType) {
+  return {
+    type: FETCH_LISTS,
+    userId,
+    dateFilterType
+  }
 }
 
 export function downloadList (listID, filter = 'ALL') {
@@ -31,8 +35,10 @@ export function downloadList (listID, filter = 'ALL') {
 export const initialState = {
   isFetching: false,
   error: '',
-  lists: []
+  lists: [],
+  listCount: 0,
 }
+
 export default function (state = initialState, action) {
   switch (action.type) {
     case FETCH_LISTS:
@@ -44,7 +50,8 @@ export default function (state = initialState, action) {
       return {
         isFetching: false,
         lists: orderBy(action.lists, ['date'], ['desc']),
-        error: ''
+        listCount: action.lists.length,
+        error: '',
       }
     case LISTS_FETCH_FAILED:
       return {
