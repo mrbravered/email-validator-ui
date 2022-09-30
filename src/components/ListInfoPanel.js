@@ -20,32 +20,34 @@ class ListInfoPanel extends React.Component {
   }
 
   render () {
-    const { listCount, users, handleUserSelectChange } = this.props
+    const { listCount, users, handleUserSelectChange, currentUser } = this.props
 
     return (
       <div className={styles.infoPanel}>
         <div className={styles.selectLabel}>
           <label className={styles.selectLabel}>Filtered by</label>
         </div>
-        <div className={styles.selectField}>
-          <select
-            className={styles.formControl}
-            id="exampleFormControlSelect1"
-            onChange={
-              (e) => {
-                this.setState({
-                  selectedUserId: e.currentTarget.value,
-                  seletedFilterDate: ''
-                });
-                handleUserSelectChange(e.currentTarget.value, '')
-              }
-            }>
-            <option value="">All</option>
-            {users.map((user, index) => 
-              <option key={index} value={user.id}>{user.name}</option>
-            )}
-          </select>
-        </div>
+        {currentUser.role === 'Admin' &&
+          <div className={styles.selectField}>
+            <select
+              className={styles.formControl}
+              id="exampleFormControlSelect1"
+              onChange={
+                (e) => {
+                  this.setState({
+                    selectedUserId: e.currentTarget.value,
+                    seletedFilterDate: ''
+                  });
+                  handleUserSelectChange(e.currentTarget.value, '')
+                }
+              }>
+              <option value="">All</option>
+              {users.map((user, index) => 
+                <option key={index} value={user.id}>{user.email}</option>
+              )}
+            </select>
+          </div>
+        }
         <div className={styles.selectField}>
           <select
             className={styles.formControl}

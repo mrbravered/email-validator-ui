@@ -3,9 +3,10 @@ import { push } from 'react-router-redux'
 import * as duck from '../modules/Auth'
 import * as Api from 'Api'
 
-const getIsLoggedIn = (state) => state.auth.isLoggedIn
+const getIsLoggedIn = (state) => state.auth.currentUser.isLoggedIn
 
 function * handleLoginSuccess (action, user) {
+  localStorage.setItem('id', user.id)
   localStorage.setItem('APIKey', user.APIKey)
   localStorage.setItem('email', user.email)
   localStorage.setItem('role', user.role)
@@ -49,8 +50,10 @@ function * loginFlow () {
       }
     }
     yield take(duck.LOGOUT)
+    localStorage.removeItem('id')
     localStorage.removeItem('APIKey')
     localStorage.removeItem('email')
+    localStorage.removeItem('role')
     yield put(push('/app/login'))
   }
 }

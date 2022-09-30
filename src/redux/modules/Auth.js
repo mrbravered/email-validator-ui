@@ -33,12 +33,15 @@ export function register (email, password, resolve, reject) {
 
 // Reducer
 export const initialState = {
-  isLoggedIn: Boolean(localStorage.getItem('APIKey')),
   loginFailed: false,
   isFetching: false,
-  APIKey: localStorage.getItem('APIKey'),
-  email: localStorage.getItem('email'),
-  role: localStorage.getItem('role'),
+  currentUser: {
+    isLoggedIn: Boolean(localStorage.getItem('APIKey')),
+    id: localStorage.getItem('id'),
+    APIKey: localStorage.getItem('APIKey'),
+    email: localStorage.getItem('email'),
+    role: localStorage.getItem('role'),
+  }
 }
 
 export default function (state = initialState, action) {
@@ -55,25 +58,32 @@ export default function (state = initialState, action) {
         isLoggedIn: true,
         loginFailed: false,
         isFetching: false,
-        APIKey: action.user.APIKey,
-        email: action.user.email,
-        role: action.user.role,
+        currentUser: {
+          ...action.user,
+          isLoggedIn: true,
+        }
       }
     case LOGIN_FAILED:
       return {
         ...state,
-        isLoggedIn: false,
         loginFailed: true,
-        isFetching: false
+        isFetching: false,
+        currentUser: {
+          ...state.user,
+          isLoggedIn: false,
+        }
       }
     case LOGOUT:
       return {
         ...state,
-        isLoggedIn: false,
         loginFailed: false,
-        APIKey: '',
-        email: '',
-        role: '',
+        currentUser: {
+          id: '',
+          APIKey: '',
+          email: '',
+          role: '',
+          isLoggedIn: false,
+        }
       }
     default:
       return state
