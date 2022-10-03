@@ -66,7 +66,9 @@ export class UserUpdate extends React.Component {
               <button
                 type='submit'
                 className='btn btn-primary'
-              >Update</button>
+              >Update User</button>
+              <a type='button' className='btn btn-primary' href={`${user.id}/reset-password`}>Reset Password</a>
+              <a type='button' className='btn btn-info' href={`/app/users`}>Cancel</a>  
             </div>
           </div>
         </div>
@@ -74,12 +76,6 @@ export class UserUpdate extends React.Component {
     )
   }
 }
-
-// const mapStateToProps = (state) => {
-//   return {
-//     user: state.user.user
-//   }
-// }
 
 export default compose(
   connect((state) => {
@@ -97,9 +93,3 @@ export default compose(
     }
   )
 )(UserUpdate)
-// export default UserUpdateForm = connect(select, actions)(reduxForm({
-//   form: 'UserUpdate',
-//   enableReinitialize : true,
-//   fields,
-//   validate,
-// }))(UserUpdate)

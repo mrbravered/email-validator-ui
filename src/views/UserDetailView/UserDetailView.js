@@ -1,10 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { getUser, updateUser } from 'redux/modules/User'
-import { validate } from 'redux/modules/BulkValidation'
+import { getUser, updateUser, updateUserPassword } from 'redux/modules/User'
 import HeaderWithRightSpinner from 'components/HeaderWithRightSpinner'
-import UserForm from 'forms/UserForm'
+import { UserUpdateForm, UserPasswordUpdateForm } from 'forms/UserForm'
 
 export class UserDetailView extends React.Component {
 
@@ -22,19 +21,32 @@ export class UserDetailView extends React.Component {
     updateOneUser(id, data)
   }
 
+  onResetPasswod (data) {
+    const {updateUserPassword, params: {id}} = this.props
+    updateUserPassword(id, data.password)
+  }
+
+  isResetPasswordPage () {
+    return this.props.location.pathname.includes("reset-password")
+  }
+
   render () {
     const { isFetching, user } = this.props
-    console.log(user)
+
     return (
       <div className='container'>
         <div className='row'>
           <div className='col-sm-12 col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3'>
             <HeaderWithRightSpinner title={user.email} loading={isFetching} />
-            <UserForm user={user} onSubmit={this.onSubmit.bind(this)}/>
+            { this.isResetPasswordPage() ?
+                <UserPasswordUpdateForm user={user} onSubmit={this.onResetPasswod.bind(this)}/>
+              :
+                <UserUpdateForm user={user} onSubmit={this.onSubmit.bind(this)}/>
+            }
           </div>
         </div>
       </div>
-      )
+    )
   }
 }
 
@@ -48,6 +60,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     getOneUser: (id)=> dispatch(getUser(id)),
     updateOneUser: (id, data) => dispatch(updateUser(id, data)),
+    updateUserPassword: (id, password) => dispatch(updateUserPassword(id, password))
   }
 }
 

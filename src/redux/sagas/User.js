@@ -1,6 +1,7 @@
 import { takeLatest } from 'redux-saga'
 import { call, put } from 'redux-saga/effects'
-import { getUserList, getUser, updateUser } from 'Api'
+import { push } from 'react-router-redux'
+import { getUserList, getUser, updateUser, updateUserPassword } from 'Api'
 import * as duck from '../modules/User'
 
 function * fetchUserList (action) {
@@ -30,10 +31,21 @@ function * fetchUpdateUser (action) {
   }
 }
 
+function * fetchUpdateUserPassword (action) {
+  try {
+    const user = yield call(updateUserPassword, action.id, action.password)
+    yield put({type: duck.UPDATE_USER_PASSWORD_SUCEEDED, user: user})
+    yield put(push(`/app/users/${action.id}`))
+  } catch(error) {
+    yield put({type: duck.UPDATE_USER_PASSWORD_FAILED, error: error.message})
+  }
+}
+
 export default function * UserListSaga () {
   yield [
     takeLatest(duck.GET_USER_LIST_REQUESTED, fetchUserList),
     takeLatest(duck.GET_USER_REQUESTED, fetchUser),
     takeLatest(duck.UPDATE_USER_REQUESTED, fetchUpdateUser),
+    takeLatest(duck.UPDATE_USER_PASSWORD_REQUESTED, fetchUpdateUserPassword),
   ]
 }

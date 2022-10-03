@@ -2,7 +2,7 @@ import 'whatwg-fetch'
 
 const INVALID_APIKEY_MESSAGE = 'Invalid APIKey. Logout and login again with a valid API Key.'
 // const BASE_URL = 'http://listquality.com:3000/api/'
-const BASE_URL = 'http://213.5.71.27:3000/api/'
+const BASE_URL = 'http://127.0.0.1:3000/api/'
 
 function checkStatus(response) {
   if (response.status >= 200 && response.status < 300) {
@@ -266,6 +266,25 @@ export function updateUser(id, data) {
       body: JSON.stringify({
         id,
         ...data
+      })
+    })
+    .then(checkStatus)
+    .then(parseJSON)
+}
+
+
+export function updateUserPassword(id, password) {
+  const token = getToken()
+  return fetch(BASE_URL + 'user/reset-password', {
+      mode: 'cors',
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify({
+        id,
+        password
       })
     })
     .then(checkStatus)

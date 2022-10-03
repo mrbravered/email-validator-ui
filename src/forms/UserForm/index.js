@@ -1,2 +1,6 @@
 import UserUpdateForm from './UserUpdateForm'
-export default UserUpdateForm
+import UserPasswordUpdateForm from './UserPasswordUpdateForm'
+export {
+  UserUpdateForm,
+  UserPasswordUpdateForm
+}

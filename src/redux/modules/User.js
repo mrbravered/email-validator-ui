@@ -11,6 +11,10 @@ export const UPDATE_USER_REQUESTED = 'auth/UPDATE_USER_REQUESTED'
 export const UPDATE_USER_FAILED = 'auth/UPDATE_USER_FAILED'
 export const UPDATE_USER_SUCEEDED = 'auth/UPDATE_USER_SUCEEDED'
 
+export const UPDATE_USER_PASSWORD_REQUESTED = 'auth/UPDATE_USER_PASSWORD_REQUESTED'
+export const UPDATE_USER_PASSWORD_FAILED = 'auth/UPDATE_USER_PASSWORD_FAILED'
+export const UPDATE_USER_PASSWORD_SUCEEDED = 'auth/UPDATE_USER_PASSWORD_SUCEEDED'
+
 // Action Creators
 export function getUserList() {
   return {
@@ -30,6 +34,14 @@ export function updateUser(id, data) {
     type: UPDATE_USER_REQUESTED,
     id,
     data
+  }
+}
+
+export function updateUserPassword(id, password) {
+  return {
+    type: UPDATE_USER_PASSWORD_REQUESTED,
+    id,
+    password
   }
 }
 
@@ -86,6 +98,22 @@ export default function (state = initialState, action) {
         user: action.user,
       }
     case UPDATE_USER_FAILED:
+      return {
+        ...state,
+        isFetching: false
+      }
+    case UPDATE_USER_PASSWORD_REQUESTED:
+      return {
+        ...state,
+        isFetching: true,
+      }
+    case UPDATE_USER_PASSWORD_SUCEEDED:
+      return {
+        ...state,
+        isFetching: false,
+        user: action.user,
+      }
+    case UPDATE_USER_PASSWORD_FAILED:
       return {
         ...state,
         isFetching: false

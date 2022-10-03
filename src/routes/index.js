@@ -11,7 +11,7 @@ import NewListView from 'views/NewListView'
 import ListsView from 'views/ListsView'
 import ListView from 'views/ListView'
 import UserListView from 'views/UserListView'
-import UserDetailView from '../views/UserDetailView/UserDetailView'
+import UserDetailView from 'views/UserDetailView'
 
 import { logout } from 'redux/modules/Auth'
 
@@ -48,6 +48,7 @@ export default (store) => {
       <Route path='signup' component={RegisterView} onEnter={onLoginEnter(store)} />
       <Route path='users' component={UserListView} onEnter={isAuthenticated(store)} />
       <Route path='users/:id' component={UserDetailView} onEnter={isAuthenticated(store)} />
+      <Route path='users/:id/reset-password' component={UserDetailView} onEnter={isAuthenticated(store)} />
       <Route path='add-emails' component={AddEmails} onEnter={isAuthenticated(store)} />
       <Route path='single-email-validation' component={SingleValidationView} onEnter={isAuthenticated(store)} />
       <Route path='lists/new' component={NewListView} onEnter={isAuthenticated(store)} />
