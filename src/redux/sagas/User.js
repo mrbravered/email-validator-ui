@@ -26,6 +26,7 @@ function * fetchUpdateUser (action) {
   try {
     const user = yield call(updateUser, action.id, action.data)
     yield put({type: duck.UPDATE_USER_SUCEEDED, user: user})
+    yield put(push(`/app/users`))
   } catch(error) {
     yield put({type: duck.UPDATE_USER_FAILED, error: error.message})
   }

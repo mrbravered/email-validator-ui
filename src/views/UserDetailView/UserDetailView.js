@@ -18,10 +18,15 @@ export class UserDetailView extends React.Component {
 
   onSubmit (data) {
     const {updateOneUser, params: {id}} = this.props
-    updateOneUser(id, data)
+    updateOneUser(id, {
+      ...data,
+      allowedPremiumStatuses: data.allowedPremiumStatuses.map((status)=>(
+        status.value
+      ))
+    })
   }
 
-  onResetPasswod (data) {
+  onResetPassword (data) {
     const {updateUserPassword, params: {id}} = this.props
     updateUserPassword(id, data.password)
   }
@@ -39,7 +44,7 @@ export class UserDetailView extends React.Component {
           <div className='col-sm-12 col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3'>
             <HeaderWithRightSpinner title={user.email} loading={isFetching} />
             { this.isResetPasswordPage() ?
-                <UserPasswordUpdateForm user={user} onSubmit={this.onResetPasswod.bind(this)}/>
+                <UserPasswordUpdateForm user={user} onSubmit={this.onResetPassword.bind(this)}/>
               :
                 <UserUpdateForm user={user} onSubmit={this.onSubmit.bind(this)}/>
             }

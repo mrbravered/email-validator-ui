@@ -3,20 +3,16 @@ import PropTypes from 'prop-types'
 import {compose} from 'redux'
 import { connect } from 'react-redux'
 import { reduxForm } from 'redux-form'
+import Select from 'react-select'
 
-export const fields = ['requestLimit', 'expandLimit']
+export const fields = ['requestLimit', 'expandLimit', 'allowedPremiumStatuses']
 
 const validate = (values) => {
   const errors = {}
-
-  // const isTextareaFilled = values.textarea && values.textarea !== ''
-
-  // if (!isTextareaFilled && !isFileInpxutFilled) {
-    // errors._error = 'You have to either select a valid file or paste the list.'
-  // }
   return errors
 }
-export class UserUpdate extends React.Component {
+
+class UserUpdate extends React.Component {
 
   static propTypes = {
     handleSubmit: PropTypes.func,
@@ -34,6 +30,7 @@ export class UserUpdate extends React.Component {
 
   render () {
     const { user, fields, handleSubmit, error, values } = this.props
+    console.log(fields.allowedPremiumStatuses)
 
     return (
       <form onSubmit={handleSubmit}>
@@ -56,7 +53,17 @@ export class UserUpdate extends React.Component {
           <div className='col-sm-12'>
             <div className='form-group d-flex'>
               <label htmlFor='expandLimit'>Premium Status</label>
-              <div>None</div>
+              <Select 
+                {...fields.allowedPremiumStatuses}
+                value={fields.allowedPremiumStatuses.value}
+                onChange={fields.allowedPremiumStatuses.onChange}
+                onBlur={fields.allowedPremiumStatuses.onBlur.onBlur}
+                options={[
+                  {'label': 'spamtrap', 'value': 'spamtrap'},
+                  {'label': 'complainer', 'value': 'complainer'},
+                ]}
+                isMulti
+              />
             </div>
           </div>
 
@@ -81,12 +88,17 @@ export default compose(
   connect((state) => {
     return {
       user: state.user.user,
-      initialValues: state.user.user,
+      initialValues: {
+        ...state.user.user,
+        allowedPremiumStatuses: state.user.user.allowedPremiumStatuses && state.user.user.allowedPremiumStatuses.map((status)=>{
+          return {'value': status, 'label': status}
+        })
+      },
     }
   }),
   reduxForm(
     {
-      form: 'UserUpdate',
+      form: 'UserUpdateForm',
       enableReinitialize: true,
       fields,
       validate
