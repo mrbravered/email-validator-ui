@@ -3,13 +3,23 @@ import PropTypes from 'prop-types'
 import {compose} from 'redux'
 import { connect } from 'react-redux'
 import { reduxForm } from 'redux-form'
-import * as val from 'utils/validation'
 
 export const fields = ['password']
 
-const validate = val.createValidator({
-  password: [val.required],
-})
+const validate = (values) => {
+  const errors = {}
+  const isPasswordFilled = values.password && values.password !== '' 
+  if (!isPasswordFilled) {
+    errors._error = 'Please Input Password.'
+  }
+  if(values.password) {
+    const isPasswordValidate = values.password.length >= 8
+    if(!isPasswordValidate) {
+      errors._error = 'The Password Length should bigger than 8.'
+    }
+  }
+  return errors
+}
 
 export class UserPasswordUpdateForm extends React.Component {
 

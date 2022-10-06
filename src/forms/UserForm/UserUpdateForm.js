@@ -9,6 +9,11 @@ export const fields = ['requestLimit', 'expandLimit', 'allowedPremiumStatuses']
 
 const validate = (values) => {
   const errors = {}
+  const isRequestLimitValidated = values.requestLimit && (values.requestLimit > 0 || values.requestLimit === -1)
+  const isExpandLimitValidated = values.expandLimit && (values.expandLimit > 0 || values.expandLimit === -1)
+  if (!isRequestLimitValidated || !isExpandLimitValidated) {
+    errors._error = 'Input correct values. The input value should bigger than 0 or equals -1.'
+  }
   return errors
 }
 
@@ -29,8 +34,7 @@ class UserUpdate extends React.Component {
   }
 
   render () {
-    const { user, fields, handleSubmit, error, values } = this.props
-    console.log(fields.allowedPremiumStatuses)
+    const { user, fields, handleSubmit, error } = this.props
 
     return (
       <form onSubmit={handleSubmit}>
