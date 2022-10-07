@@ -9,10 +9,10 @@ export const fields = ['requestLimit', 'expandLimit', 'allowedPremiumStatuses']
 
 const validate = (values) => {
   const errors = {}
-  const isRequestLimitValidated = values.requestLimit && (values.requestLimit > 0 || values.requestLimit === -1)
-  const isExpandLimitValidated = values.expandLimit && (values.expandLimit > 0 || values.expandLimit === -1)
+  const isRequestLimitValidated = values.requestLimit >= -1 || values.requestLimit === 0
+  const isExpandLimitValidated = values.expandLimit >= -1 || values.expandLimit === 0
   if (!isRequestLimitValidated || !isExpandLimitValidated) {
-    errors._error = 'Input correct values. The input value should bigger than 0 or equals -1.'
+    errors._error = 'Input correct values. The input value should bigger than -2.'
   }
   return errors
 }
