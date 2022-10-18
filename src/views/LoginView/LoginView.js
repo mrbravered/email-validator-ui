@@ -19,9 +19,7 @@ export class LoginView extends React.Component {
         <div className='row'>
           <div className='col-sm-12 col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3'>
             <HeaderWithRightSpinner title='Login' loading={isFetching} />
-
             <LoginForm onSubmit={onSubmit} />
-
           </div>
         </div>
       </div>

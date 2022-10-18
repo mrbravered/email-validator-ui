@@ -45,7 +45,7 @@ const navbarStyle = {
   borderRadius: '0px',
 }
 
-const TopNavbar = ({auth, onLogoutClick}) => {
+const TopNavbar = ({currentUser, onLogoutClick}) => {
   const onLogoutLinkClick = (e) => {
     e.preventDefault()
     onLogoutClick()
@@ -67,14 +67,17 @@ const TopNavbar = ({auth, onLogoutClick}) => {
         </div>
         <div className='navbar-collapse collapse' id="navbarSupportedContent">
           <ul className='nav navbar-nav navbar-right'>
-          {auth.isLoggedIn ?
+          {currentUser.isLoggedIn ?
             <React.Fragment>
-              { auth.role === 'Admin' &&
+              { currentUser.role === 'Admin' &&
+              <React.Fragment>
+                <li><Link className={styles.navbarItem} to={'/app/users'}>User Management</Link></li>
                 <li><Link className={styles.navbarItem} to={'/app/add-emails'}>Add Emails</Link></li>
+                </React.Fragment>
               }
               <li><Link className={styles.navbarItem} to={'/app/lists'}>Bulk Email Validation</Link></li>
               <li><Link className={styles.navbarItem} to={'/app/single-email-validation'}>Single Email Validation</Link></li>
-              <UserActionsDropdown email={auth.email} onLogoutLinkClick={onLogoutLinkClick} />
+              <UserActionsDropdown email={currentUser.email} onLogoutLinkClick={onLogoutLinkClick} />
             </React.Fragment> :
             <React.Fragment>
               <li><Link className={styles.navbarItem} to={'/app/login'}>Login</Link></li>
@@ -88,7 +91,7 @@ const TopNavbar = ({auth, onLogoutClick}) => {
 }
 
 TopNavbar.propTypes = {
-  auth: PropTypes.object.isRequired,
+  currentUser: PropTypes.object.isRequired,
   onLogoutClick: PropTypes.func.isRequired
 }
 

@@ -53,7 +53,7 @@ export class SingleValidation extends React.Component {
                 <button type='submit' className='btn btn-block btn-primary'>Validate</button>
               </div>
             </form>
-            {error ? <div className='alert alert-danger'>Error: {error}</div> : ''}
+            {error ? <div className='alert alert-danger'>{error + ' Please update your premium membership.'}</div> : ''}
             <SingleValidationResult emailAddress={emailAddress} status={status} />
           </div>
         </div>

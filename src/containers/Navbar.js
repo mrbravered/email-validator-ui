@@ -4,7 +4,7 @@ import { logout } from 'redux/modules/Auth'
 
 const mapStateToProps = (state) => {
   return {
-    auth: state.auth
+    currentUser: state.auth.currentUser
   }
 }
 const mapDispatchToProps = (dispatch) => {
